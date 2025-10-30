@@ -1,0 +1,15 @@
+/node_modules
+.gitignore
+README.md
+# Archivos de logg
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+# Archivos de build locales
+build/
+dist/
+
+.env
+
+# Cachés del sistema
+.DS_Store
