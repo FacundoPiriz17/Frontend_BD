@@ -5,7 +5,7 @@ import { FaBell } from "react-icons/fa";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
-import ucuRoomsLogo from "../assets/uculogo.png";
+import ucuRoomsLogo from "../assets/ucurooms_White.png";
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -58,12 +58,9 @@ export default function Navbar() {
         <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-[#0b1743]">
             <div className="mx-auto max-w-7xl px-4 py-3">
                 <div className="flex items-center justify-between">
-                    <Link to="/" className="flex items-center gap-3">
                         <img  src={ucuRoomsLogo}
                               alt="Logo de Ucu Rooms"
-                              className="h-8 w-8 rounded-xl bg-white/90" />
-                    </Link>
-
+                              className="h-12 w-12 rounded-xl" />
                     <div className="flex items-center gap-4 relative">
                         <button
                             onClick={() => {
