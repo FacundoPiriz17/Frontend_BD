@@ -3,6 +3,10 @@ import { AuthProvider } from "./contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import Prueba from "./pages/Prueba";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import UnauthorizedPage from "./pages/UnauthorizedPage.jsx";
+import ParticipantePage from "./pages/participante/ParticipantePage.jsx";
+import AdminPage from "./pages/admin/AdminPage.jsx";
+import FuncionarioPage from "./pages/funcionario/FuncionarioPage.jsx";
 
 function App() {
     return (
@@ -10,10 +14,23 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<Navigate to="/login"/>} path="/" exact />
+
                     <Route element={<LoginPage />} path="/login" exact />
-                    <Route element={<ProtectedRoute />}>
-                        <Route element={<Prueba />} path="/prueba" exact />
+
+                    <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+                    <Route element={<ProtectedRoute requiredRole="Participante" />}>
+                        <Route path="/participante" element={<ParticipantePage />} />
                     </Route>
+
+                    <Route element={<ProtectedRoute requiredRole="Funcionario" />}>
+                        <Route path="/funcionario" element={<FuncionarioPage />} />
+                    </Route>
+
+                    <Route element={<ProtectedRoute requiredRole="Administrador" />}>
+                        <Route path="/admin" element={<AdminPage />} />
+                    </Route>
+
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

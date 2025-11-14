@@ -24,7 +24,22 @@ export default function LoginPage() {
         e.preventDefault();
         const result = await login(email, contrasena);
         if (result.ok) {
-            navigate("/prueba");
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            console.log(storedUser.rol);
+
+            switch (storedUser.rol) {
+                case "Participante":
+                    navigate("/participante");
+                    break;
+                case "Funcionario":
+                    navigate("/funcionario");
+                    break;
+                case "Administrador":
+                    navigate("/admin");
+                    break;
+                default:
+                    navigate("/unauthorized");
+            }
         } else {
             setError(result.error || "Usuario y/o contraseña Inválidos");
         }
