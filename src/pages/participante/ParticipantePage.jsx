@@ -1,133 +1,184 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import ReservationCard from "../../components/ReservationCard";
+import BuildingsGrid from "../../components/BuildingsGrid";
+import ReservationDetailModal from "../../components/ReservationDetailModal";
+import InvitacionModal from "../../components/InvitacionModal";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../utils/api";
 
 export default function ParticipantePage() {
-    const { user } = useAuth();
-    const navigate = useNavigate();
-    const [reservas, setReservas] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const {token, user} = useAuth();
+    const [tab, setTab] = useState("MIS");
+    const [misReservas, setMisReservas] = useState([]);
+    const [organizo, setOrganizo] = useState([]);
+    const [detail, setDetail] = useState({open: false, reserva: null});
+    const [invite, setInvite] = useState({open: false, id: null});
 
     useEffect(() => {
-        if (!user || user.rol !== "Participante") {
-            navigate("/login");
-            return;
+        let ignore = false;
+        if (!user?.ci) return;
+
+        const ci = Number(user.ci);
+        if (!ci || isNaN(ci)) return;
+
+        async function load() {
+            try {
+                const data = await apiFetch(`/reservas/cedula?ci=${ci}`, { token });
+                if (!ignore) setMisReservas(Array.isArray(data) ? data : []);
+            } catch {
+                if (!ignore) setMisReservas([]);
+            }
         }
 
-        const fetchReservas = async () => {
-            try {
-                const token = localStorage.getItem("token"); // 🔹 Recuperar el token guardado
-                const response = await fetch(
-                    `http://localhost:5000/reservas/${user.ci}`,
-                    {
-                        headers: {
-                            "Authorization": `Bearer ${token}`, // 🔹 Mandar el token al backend
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                setReservas(Array.isArray(data) ? data : []); // 🔹 Evita error si no es array
-            } catch (error) {
-                console.error("Error al cargar reservas:", error);
-                setReservas([]);
-            } finally {
-                setLoading(false);
-            }
+        load();
+        return () => {
+            ignore = true;
         };
+    }, [token, user?.ci]);
 
-        fetchReservas();
-    }, [user, navigate]);
+    useEffect(() => {
+        let ignore = false;
+        if (tab !== "INVITAR") return;
+        if (!user?.ci) return;
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
-                <div className="text-blue-800 text-lg font-semibold animate-pulse">
-                    Cargando reservas...
-                </div>
-            </div>
-        );
+        const ci = Number(user.ci);
+        if (!ci || isNaN(ci)) return;
+
+        async function load() {
+            try {
+                const data = await apiFetch(`/reservas/cedula?ci=${ci}`, { token });
+                if (!ignore) {
+                    const soloOrganizo = (Array.isArray(data) ? data : []).filter(
+                        (r) => r.soyOrganizador === 1 || r.soyOrganizador === true
+                    );
+                    setOrganizo(soloOrganizo);
+                }
+            } catch {
+                if (!ignore) setOrganizo([]);
+            }
+        }
+
+        load();
+        return () => {
+            ignore = true;
+        };
+    }, [tab, token, user?.ci]);
+
+    async function handleCancel(reserva) {
+        await apiFetch(`/reservas/cancelar/${reserva.id_reserva}`, {
+            method: "PATCH",
+            token,
+        });
+        setMisReservas((prev) => prev.filter((r) => r.id_reserva !== reserva.id_reserva));
+        setOrganizo((prev) => prev.filter((r) => r.id_reserva !== reserva.id_reserva));
     }
 
+    async function handleLeave(reserva) {
+        await apiFetch(`/reservas/salir/${reserva.id_reserva}`, {
+            method: "DELETE",
+            token,
+        });
+        setMisReservas((prev) => prev.filter((r) => r.id_reserva !== reserva.id_reserva));
+    }
+
+
+    async function openDetail(reserva) {
+        const full = await apiFetch(`/reservas/${reserva.id_reserva}`, { token });
+        setDetail({ open: true, reserva: full });
+        setDetail({ open: true, reserva });
+    }
+
+    const tabs = useMemo(
+        () => [
+            { key: "MIS", label: "Mis reservas" },
+            { key: "HACER", label: "Hacer reserva" },
+            { key: "INVITAR", label: "Invitar" },
+        ],
+        []
+    );
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex flex-col">
-            {/* Navbar */}
-            <header className="bg-white/40 backdrop-blur-md shadow-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="/assets/logo.png"
-                            alt="Logo"
-                            className="w-10 h-10 object-contain"
-                        />
-                        <h1 className="text-xl font-bold text-blue-900">Mi ReservApp</h1>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <span className="text-gray-700 font-medium">
-                            {user?.nombre} {user?.apellido}
-                        </span>
-                        <button
-                            onClick={() => {
-                                localStorage.clear();
-                                navigate("/login");
-                            }}
-                            className="bg-blue-800 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
-                        >
-                            Cerrar sesión
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            {/* Contenido principal */}
-            <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
-                <h2 className="text-2xl font-semibold text-blue-900 mb-6 text-center">
-                    Mis Reservas
-                </h2>
-
-                {reservas.length === 0 ? (
-                    <p className="text-gray-600 text-center">
-                        No tienes reservas registradas aún.
-                    </p>
-                ) : (
-                    <div className="grid gap-6 md:grid-cols-2">
-                        {reservas.map((reserva) => (
-                            <div
-                                key={reserva.id}
-                                className="bg-white/50 backdrop-blur-md p-5 rounded-xl shadow hover:shadow-lg transition"
+        <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+                <div className="mx-auto max-w-7xl px-4 py-6">
+                    <div className="mb-6 flex flex-wrap gap-2">
+                        {tabs.map((t) => (
+                            <button
+                                key={t.key}
+                                onClick={() => setTab(t.key)}
+                                className={[
+                                    "rounded-full border px-4 py-2 text-sm font-semibold",
+                                    tab === t.key
+                                        ? "border-blue-700 bg-blue-700 text-white"
+                                        : "border-blue-700 text-blue-700 hover:bg-blue-50",
+                                ].join(" ")}
                             >
-                                <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                                    {reserva.sala}
-                                </h3>
-                                <p className="text-gray-700">
-                                    <span className="font-semibold">Fecha:</span> {reserva.fecha}
-                                </p>
-                                <p className="text-gray-700">
-                                    <span className="font-semibold">Hora:</span>{" "}
-                                    {reserva.hora_inicio} - {reserva.hora_fin}
-                                </p>
-                                <p className="text-gray-700">
-                                    <span className="font-semibold">Estado:</span>{" "}
-                                    <span
-                                        className={`${
-                                            reserva.estado === "Activa"
-                                                ? "text-green-600"
-                                                : "text-red-500"
-                                        } font-medium`}
-                                    >
-                                        {reserva.estado}
-                                    </span>
-                                </p>
-                            </div>
+                                {t.label}
+                            </button>
                         ))}
                     </div>
-                )}
+
+                    {tab === "MIS" && (
+                        <div className="grid gap-3">
+                            {misReservas.map((r) => (
+                                <ReservationCard
+                                    key={r.id_reserva}
+                                    reserva={r}
+                                    isOrganizer={r.soyOrganizador}
+                                    onView={() => openDetail(r)}
+                                    onCancel={handleCancel}
+                                    onLeave={handleLeave}
+                                    onInvite={() => setInvite({ open: true, id: r.id_reserva })}
+                                />
+                            ))}
+                            {misReservas.length === 0 && (
+                                <div className="text-sm text-slate-600">
+                                    No tienes reservas por ahora.
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {tab === "HACER" && <BuildingsGrid />}
+
+                    {tab === "INVITAR" && (
+                        <div className="grid gap-3">
+                            {organizo.map((r) => (
+                                <ReservationCard
+                                    key={r.id_reserva}
+                                    reserva={r}
+                                    isOrganizer
+                                    onView={() => {}}
+                                    onCancel={handleCancel}
+                                    onInvite={() => setInvite({ open: true, id: r.id_reserva })}
+                                />
+                            ))}
+                            {organizo.length === 0 && (
+                                <div className="text-sm text-slate-600">
+                                    No organizas reservas todavía.
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </main>
+
+            <Footer />
+            <ReservationDetailModal
+                open={detail.open}
+                onClose={() => setDetail({ open: false, reserva: null })}
+                reserva={detail.reserva}
+            />
+            <InvitacionModal
+                open={invite.open}
+                onClose={() => setInvite({ open: false, id: null })}
+                reservaId={invite.id}
+                token={token}
+                onSaved={() => {}}
+            />
         </div>
     );
 }
