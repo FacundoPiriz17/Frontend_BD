@@ -39,10 +39,8 @@ export default function AdminPage() {
               Desde aquí podrás gestionar usuarios, roles y datos del sistema.
             </p>
 
-            <div className="mt-8 bg-white p-6 rounded-xl shadow-md w-full max-w-lg">
-              <p className="text-gray-500 text-center italic">
-                (Próximamente panel de administración general)
-              </p>
+            <div>
+              <ResumenSalas />
             </div>
           </main>
         </div>
