@@ -7,6 +7,7 @@ import {
   FaUser,
   FaBell,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function SidebarAdmin() {
   return (
@@ -27,14 +28,14 @@ export default function SidebarAdmin() {
 
 function NavItem({ icon, label, href }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="flex items-center  gap-4 p-3 cursor-pointer rounded-lg hover:bg-blue-900 transition-all duration-200 group"
     >
       <span className="text-xl">{icon}</span>
       <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
         {label}
       </span>
-    </a>
+    </Link>
   );
 }

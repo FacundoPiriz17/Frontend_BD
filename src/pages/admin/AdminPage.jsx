@@ -2,6 +2,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ucuRoomsLogo from "../../assets/ucurooms_White.png";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
+import ResumenSalas from "../../components/ResumenSalas.jsx";
 
 export default function AdminPage() {
   const { user, logout } = useAuth();
@@ -45,9 +46,9 @@ export default function AdminPage() {
           </main>
         </div>
       </div>
-      <nav className="flex justify-between items-center bg-white shadow-md px-6 py-4">
+      <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
         <div className="flex items-center space-x-3">
-          <h1 className="text-xl font-semibold text-blue-900">UCU</h1>
+          <h1 className="text-xl font-semibold text-blue-400">UCU</h1>
         </div>
       </nav>
     </div>
