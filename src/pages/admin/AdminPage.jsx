@@ -12,6 +12,7 @@ export default function AdminPage() {
     logout();
     navigate("/login");
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
       <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
