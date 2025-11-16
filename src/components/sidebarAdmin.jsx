@@ -30,7 +30,7 @@ function NavItem({ icon, label, href }) {
   return (
     <Link
       to={href}
-      className="flex items-center  gap-4 p-3 cursor-pointer rounded-lg hover:bg-blue-900 transition-all duration-200 group"
+      className="flex items-center  gap-4 p-3 cursor-pointer rounded-lg hover:bg-[#fcfaee] hover:text-green-800 transition-all duration-200 group"
     >
       <span className="text-xl">{icon}</span>
       <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">

@@ -52,7 +52,7 @@ export default function AdminPage() {
       </div>
       <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
         <div className="flex items-center space-x-3">
-          <h1 className="text-xl font-semibold text-blue-400">UCU</h1>
+          <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
         </div>
       </nav>
     </div>
