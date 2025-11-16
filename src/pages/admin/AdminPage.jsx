@@ -2,7 +2,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ucuRoomsLogo from "../../assets/ucurooms_White.png";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
-import ResumenSalas from "../../components/ResumenSalas.jsx";
+import NavButton from "../../components/NavButton.jsx";
 
 export default function AdminPage() {
   const { user, logout } = useAuth();
@@ -41,8 +41,11 @@ export default function AdminPage() {
               Desde aquí podrás gestionar usuarios, roles y datos del sistema.
             </p>
 
-            <div>
-              <ResumenSalas />
+            <div className="m-6 bg-white p-4 rounded-xl shadow-md w-full max-w-lg grid grid-cols-2 gap-1 ">
+              <NavButton href={"/stats"} name={"Estadisticas"} />
+              <NavButton href={"/sanciones"} name={"Sanciones"} />
+              <NavButton href={"reseñas"} name={"Reseñas"} />
+              <NavButton href={"/usuarios"} name={"Usuarios"} />
             </div>
           </main>
         </div>
