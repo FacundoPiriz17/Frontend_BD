@@ -8,10 +8,11 @@ import {
   FaBell,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 export default function SidebarAdmin() {
   return (
-    <div className="h-screen w-16 hover:w-60 bg-green-800 text-white flex flex-col transition-all duration-300 overflow-hidden -mt-1 mb-4 p-4 border border-green-800 rounded-md group">
+    <div className="sticky top-0 h-screen w-16 hover:w-60 bg-green-800 text-white flex flex-col transition-all duration-300 overflow-y-auto overflow-x-hidden -mt-1 mb-4 p-4 border border-green-800 rounded-md group">
       <NavItem icon={<FaChartBar />} label="Estadísticas" href="/stats" />
       <NavItem
         icon={<FaCalendarAlt />}
