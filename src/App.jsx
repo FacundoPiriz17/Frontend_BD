@@ -9,6 +9,7 @@ import AdminPage from "./pages/admin/AdminPage.jsx";
 import FuncionarioPage from "./pages/funcionario/FuncionarioPage.jsx";
 import StatsPage from "./pages/stats/StatsPage";
 import SancionesPage from "./pages/admin/Sanciones.jsx";
+import ReseniasPage from "./pages/admin/Resenias.jsx";
 
 function App() {
   return (
@@ -36,6 +37,10 @@ function App() {
             <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]} />}>
                 <Route path="/sanciones" element={<SancionesPage />} />
             </Route>
+            <Route element={<ProtectedRoute requiredRoles="Administrador" />}>
+                <Route path="/reseñas" element={<ReseniasPage />} />
+            </Route>
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
