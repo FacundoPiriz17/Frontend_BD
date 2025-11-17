@@ -8,6 +8,7 @@ import ParticipantePage from "./pages/participante/ParticipantePage.jsx";
 import AdminPage from "./pages/admin/AdminPage.jsx";
 import FuncionarioPage from "./pages/funcionario/FuncionarioPage.jsx";
 import StatsPage from "./pages/stats/StatsPage";
+import SancionesPage from "./pages/admin/Sanciones.jsx";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/stats" element={<StatsPage />} />
           </Route>
+            <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]} />}>
+                <Route path="/sanciones" element={<SancionesPage />} />
+            </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
