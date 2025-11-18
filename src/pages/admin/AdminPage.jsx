@@ -44,7 +44,7 @@ export default function AdminPage() {
             <div className="m-6 bg-white p-4 rounded-xl shadow-md w-full max-w-lg grid grid-cols-2 gap-1 ">
               <NavButton href={"/stats"} name={"Estadisticas"} />
               <NavButton href={"/sanciones"} name={"Sanciones"} />
-              <NavButton href={"reseñas"} name={"Reseñas"} />
+              <NavButton href={"/reseñas"} name={"Reseñas"} />
               <NavButton href={"/usuarios"} name={"Usuarios"} />
             </div>
           </main>
