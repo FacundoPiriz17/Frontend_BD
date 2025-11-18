@@ -19,23 +19,40 @@ export default function ReservaModal({ open, onClose, edificio, token, onConfirm
     }, [open, edificio, token]);
 
     useEffect(() => {
-        if (!form.sala || !form.fecha) { setTurnos([]); return; }
+        if (!form.sala || !form.fecha) {
+            setTurnos([]);
+            return;
+        }
+
         let ignore = false;
+
         async function loadTurnos() {
+            setLoading(true);
             try {
-                setLoading(true);
-                const data = await apiFetch(
-                    `/turnos/all`,
-                    { token }
-                );
-                if (!ignore) setTurnos(Array.isArray(data) ? data : []);
+                const data = await apiFetch(`/turnos/all`, { token });
+                console.log("Turnos recibidos:", data);
+                if (!ignore) {
+                    if (Array.isArray(data)) {
+                        setTurnos(data);
+                    } else {
+                        console.warn("Respuesta de /turnos/all no es un array:", data);
+                        setTurnos([]);
+                    }
+                }
+            } catch (err) {
+                console.error("Error cargando turnos:", err);
+                if (!ignore) setTurnos([]);
             } finally {
                 if (!ignore) setLoading(false);
             }
         }
+
         loadTurnos();
-        return () => { ignore = true; };
-    }, [form.sala, form.fecha, edificio, token]);
+
+        return () => {
+            ignore = true;
+        };
+    }, [form.sala, form.fecha, token]);
 
     if (!open) return null;
 

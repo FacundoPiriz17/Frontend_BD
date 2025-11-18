@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { FaBell } from "react-icons/fa";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
 import ucuRoomsLogo from "../assets/ucurooms_White.png";
+import { useToast } from "../contexts/ToastContext";
 
 export default function Navbar() {
     const navigate = useNavigate();
     const { user, token, logout } = useAuth();
+    const { showToast } = useToast();
     const [notifOpen, setNotifOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const pendingCount = useMemo(() => items.length, [items]);
 
     useEffect(() => {
@@ -31,27 +34,32 @@ export default function Navbar() {
                 if (!ignore) setLoading(false);
             }
         }
-        load();
+        if (token) load();
         return () => {
             ignore = true;
         };
     }, [token]);
 
-    async function handleAccept(n) {
-        await apiFetch(`/reservas/confirmacion/${n.reservaId}`, {
-            method: "PATCH",
-            token,
-            body: { confirmacion: true },
-        });
-        setItems((prev) => prev.filter((x) => x.id !== n.id));
-    }
-    async function handleReject(n) {
-        await apiFetch(`/reservas/confirmacion/${n.reservaId}`, {
-            method: "PATCH",
-            token,
-            body: { confirmacion: false },
-        });
-        setItems((prev) => prev.filter((x) => x.id !== n.id));
+    async function handleConfirm(n, estado) {
+        try {
+            await apiFetch(`/reservas/confirmacion/${n.reservaId}`, {
+                method: "PATCH",
+                token,
+                body: { confirmacion: estado },
+            });
+            setItems((prev) => prev.filter((x) => x.id !== n.id));
+            showToast({
+                type: "success",
+                message: estado === "Confrimado"
+                    ? "Invitación aceptada."
+                    : "Invitación rechazada.",
+            });
+        } catch (e) {
+            showToast({
+                type: "error",
+                message: e.message || "No se pudo actualizar la invitación.",
+            });
+        }
     }
 
     return (
@@ -68,25 +76,28 @@ export default function Navbar() {
                                 setProfileOpen(false);
                             }}
                             className="relative rounded-full p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            aria-label="Ver notificaciones"
-                        >
+                            aria-label="Ver notificaciones">
                             <FaBell className="text-white" />
                             {pendingCount > 0 && (
                                 <span className="absolute -right-0.5 -top-0.5 min-w-[18px] rounded-full bg-blue-600 px-1.5 text-[10px] font-bold text-white">
                   {pendingCount}
-                </span>
-                            )}
+                </span>)}
                         </button>
-
                         <button
                             onClick={() => {
                                 setProfileOpen((v) => !v);
                                 setNotifOpen(false);
                             }}
-                            className="group inline-flex items-center gap-2 rounded-xl px-3 py-2 text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
+                            className="group inline-flex items-center gap-2 rounded-xl px-3 py-2 text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <CgProfile size={18} />
-                            <span className="max-w-[180px] truncate">{user?.nombre ?? "Usuario"}</span>
+                            <div className="flex flex-col items-start max-w-[180px]">
+                                <span className="truncate">
+                                    {user?.nombre ?? "Usuario"}
+                                </span>
+                                <span className="text-xs text-slate-300 truncate">
+                                    {user?.rol ?? ""}
+                                </span>
+                            </div>
                             <span className="opacity-70 group-hover:opacity-100">▾</span>
                         </button>
 
@@ -107,8 +118,7 @@ export default function Navbar() {
                                         logout?.();
                                         navigate("/login");
                                     }}
-                                    className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                                >
+                                    className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">
                                     Cerrar sesión
                                 </button>
                             </div>
@@ -120,8 +130,8 @@ export default function Navbar() {
                                 onClose={() => setNotifOpen(false)}
                                 items={items}
                                 loading={loading}
-                                onAccept={handleAccept}
-                                onReject={handleReject}
+                                onAccept={(n) => handleConfirm(n, "Confirmado")}
+                                onReject={(n) => handleConfirm(n, "Rechazado")}
                             />
                         </div>
                     </div>
