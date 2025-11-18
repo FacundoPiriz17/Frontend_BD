@@ -1,24 +1,21 @@
-import { apiFetch } from "../utils/api";
+export default function ModalEliminar({open, onClose, onConfirm, objeto = "este elemento"   // <- complemento dinámico
+}) {
 
-export default function ModalEliminarSancion({ open, onClose, sancionId, token, onConfirm }) {
     if (!open) return null;
 
     async function handleDelete() {
-        await apiFetch(`/sanciones/eliminar/${sancionId}`, {
-            method: "DELETE",
-            token,
-        });
-        onClose();
         await onConfirm();
+        onClose();
     }
 
     return (
         <div className="fixed inset-0 z-50 grid place-items-center bg-gray-900/20 backdrop-blur-sm p-4">
             <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl">
-                <h2 className="text-lg font-semibold text-red-700">Eliminar sanción</h2>
+
+                <h2 className="text-lg font-semibold text-red-700">Eliminar</h2>
 
                 <p className="mt-3 text-gray-700">
-                    ¿Estás seguro que deseas eliminar esta sanción?
+                    ¿Estás seguro que deseas eliminar {objeto}?
                 </p>
 
                 <div className="flex justify-end gap-3 mt-5">
