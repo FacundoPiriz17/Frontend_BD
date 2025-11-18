@@ -9,10 +9,10 @@ export default function ReservationDetailModal({
         edificio,
         fecha,
         turno,
-        participantes = [], // [{ ci, nombre, confirmado }]
+        participantes = [],
         capacidad,
         estado,
-        organizador, // { ci, nombre } si está disponible
+        organizador,
     } = reserva;
 
     return (
@@ -48,21 +48,36 @@ export default function ReservationDetailModal({
                             <div className="p-3 text-sm text-slate-600">Sin participantes.</div>
                         ) : (
                             <ul className="divide-y divide-slate-200">
-                                {participantes.map((p, idx) => (
-                                    <li key={idx} className="flex items-center justify-between px-3 py-2">
-                                        <div className="text-sm text-slate-800">
-                                            {p.nombre ?? "Participante"} — CI {p.ci}
-                                        </div>
-                                        <span
-                                            className={[
-                                                "rounded-full px-2 py-0.5 text-xs font-semibold",
-                                                p.confirmado ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700",
-                                            ].join(" ")}
-                                        >
-                      {p.confirmado ? "Confirmado" : "Pendiente"}
-                    </span>
-                                    </li>
-                                ))}
+                                {participantes.map((p, idx) => {
+                                    const estado = p.estado_confirmacion || "Pendiente"; // fallback por si acaso
+
+                                    let badgeClasses = "bg-yellow-100 text-yellow-700";
+                                    if (estado === "Confirmado") {
+                                        badgeClasses = "bg-green-100 text-green-700";
+                                    } else if (estado === "Rechazado") {
+                                        badgeClasses = "bg-red-100 text-red-700";
+                                    }
+
+                                    return (
+                                        <li key={idx} className="flex items-center justify-between px-3 py-2">
+                                            <div className="text-sm text-slate-800">
+                                                {p.nombre ?? "Participante"} — CI {p.ci}
+                                                {p.asistencia && (
+                                                    <span className="ml-2 text-xs text-slate-500">
+                                                    ({p.asistencia})
+                                                        </span>
+                                                )}
+                                            </div>
+                                            <span
+                                                className={[
+                                                    "rounded-full px-2 py-0.5 text-xs font-semibold",
+                                                    badgeClasses,
+                                                ].join(" ")}>
+                                            {estado}
+                                            </span>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         )}
                     </div>

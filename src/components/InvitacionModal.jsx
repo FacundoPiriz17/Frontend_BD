@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { isValidCI, isValidEmail } from "../utils/validators";
+import { isValidEmail } from "../utils/validators.js";
 import { apiFetch } from "../utils/api";
+import { useToast } from "../contexts/ToastContext";
 
 export default function InvitacionModal({
                                             open,
@@ -9,6 +10,7 @@ export default function InvitacionModal({
                                             token,
                                             onSaved,
                                         }) {
+    const { showToast } = useToast();
     const [entrada, setEntrada] = useState("");
     const [invitados, setInvitados] = useState([]);
     const [enviando, setEnviando] = useState(false);
@@ -25,32 +27,21 @@ export default function InvitacionModal({
     const puedeAgregar = useMemo(() => {
         const value = entrada.trim();
         if (!value) return false;
-        if (isValidCI(value)) {
-            return !invitados.some((i) => i.ci === value);
-        }
-        if (isValidEmail(value)) {
-            return !invitados.some(
-                (i) => i.email?.toLowerCase() === value.toLowerCase()
-            );
-        }
-        return false;
+        if (!isValidEmail(value)) return false;
+        return !invitados.some(
+            (i) => i.email.toLowerCase() === value.toLowerCase()
+        );
     }, [entrada, invitados]);
 
     function agregar() {
         const value = entrada.trim();
-        if (isValidCI(value)) {
-            setInvitados((prev) => [...prev, { ci: value }]);
-            setEntrada("");
-            setError("");
+        if (!isValidEmail(value)) {
+            setError("Ingresa un email válido.");
             return;
         }
-        if (isValidEmail(value)) {
-            setInvitados((prev) => [...prev, { email: value }]);
-            setEntrada("");
-            setError("");
-            return;
-        }
-        setError("Ingresa una cédula (8 dígitos) o un email válido.");
+        setInvitados((prev) => [...prev, { email: value }]);
+        setEntrada("");
+        setError("");
     }
 
     function eliminar(idx) {
@@ -62,29 +53,30 @@ export default function InvitacionModal({
             setError("Agrega al menos un invitado.");
             return;
         }
-
         try {
             setEnviando(true);
-            setError("");
-
             for (const inv of invitados) {
-                const valor = inv.email ?? inv.ci;
-                if (!valor) continue;
-
                 await apiFetch("/reservas/invitar", {
                     method: "POST",
                     token,
                     body: {
-                        email_invitado: valor,
+                        email_invitado: inv.email,
                         id_reserva: reservaId,
                     },
                 });
             }
-
+            showToast({
+                type: "success",
+                message: "Invitaciones enviadas correctamente.",
+            });
             onSaved?.();
             onClose?.();
         } catch (e) {
             setError(e.message || "No se pudo enviar la invitación.");
+            showToast({
+                type: "error",
+                message: e.message || "Error al enviar invitaciones.",
+            });
         } finally {
             setEnviando(false);
         }
@@ -109,19 +101,15 @@ export default function InvitacionModal({
 
                 <div className="grid gap-3">
                     <label className="text-sm">
-                        <span className="block text-slate-700 mb-1">
-                            Agregar por CI (8 dígitos) o Email
-                        </span>
+            <span className="block text-slate-700 mb-1">
+              Agregar por Email
+            </span>
                         <div className="flex gap-2">
                             <input
                                 value={entrada}
                                 onChange={(e) => setEntrada(e.target.value)}
-                                onKeyDown={(e) =>
-                                    e.key === "Enter" &&
-                                    puedeAgregar &&
-                                    agregar()
-                                }
-                                placeholder="12345678 o nombre@correo.com"
+                                onKeyDown={(e) => e.key === "Enter" && puedeAgregar && agregar()}
+                                placeholder="nombre@correo.ucu.edu.uy"
                                 className="w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                             />
                             <button
@@ -134,9 +122,7 @@ export default function InvitacionModal({
                         </div>
                     </label>
 
-                    {error && (
-                        <div className="text-sm text-red-600">{error}</div>
-                    )}
+                    {error && <div className="text-sm text-red-600">{error}</div>}
 
                     <div className="max-h-[40vh] overflow-auto rounded-xl border border-slate-200">
                         {invitados.length === 0 ? (
@@ -151,9 +137,7 @@ export default function InvitacionModal({
                                         className="flex items-center justify-between px-3 py-2"
                                     >
                                         <div className="text-sm text-slate-800">
-                                            {p.ci
-                                                ? `CI: ${p.ci}`
-                                                : `Email: ${p.email}`}
+                                            Email: {p.email}
                                         </div>
                                         <button
                                             onClick={() => eliminar(idx)}

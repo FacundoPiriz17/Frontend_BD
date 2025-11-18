@@ -7,9 +7,11 @@ import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
 import uculogo from "../assets/ucurooms.png";
 import InvitacionModal from "./InvitacionModal.jsx";
+import { useToast } from "../contexts/ToastContext";
 
-export default function BuildingsGrid() {
-    const { token } = useAuth();
+export default function BuildingsGrid({ onReservaCreada }) {
+    const {token, user} = useAuth();
+    const { showToast } = useToast();
     const [edificios, setEdificios] = useState([]);
     const [campus, setCampus] = useState("Todos");
     const [modalReserva, setModalReserva] = useState({ open: false, edificio: "" });
@@ -49,21 +51,37 @@ export default function BuildingsGrid() {
     }, [edificios, campus]);
 
     async function handleConfirmReserva(payload) {
-        const reserva = await apiFetch("/reservas/registrar", {
-            method: "POST",
-            token,
-            body: {
-                edificio: payload.edificio,
-                nombre_sala: payload.sala,
-                fecha: payload.fecha,
-                id_turno: payload.turno,
-            },
-        });
-        setModalReserva({ open: false, edificio: "" });
-        if (reserva?.id_reserva) {
-            setModalInvitacion({open: true, reservaId: reserva.id_reserva});
+        try {
+            const reserva = await apiFetch("/reservas/registrar", {
+                method: "POST",
+                token,
+                body: {
+                    nombre_sala: payload.sala,
+                    edificio: payload.edificio,
+                    fecha: payload.fecha,
+                    id_turno: payload.turno,
+                    ci: user?.ci,
+                    estado: "Activa",
+                    participantes_ci: [],
+                },
+            });
+            setModalReserva({ open: false, edificio: "" });
+            showToast({
+                type: "success",
+                message: "Reserva creada correctamente.",
+            });
+            if (reserva?.id_reserva) {
+                setModalInvitacion({ open: true, reservaId: reserva.id_reserva });
+            }
+            onReservaCreada?.();
+            return reserva;
+        } catch (e) {
+            showToast({
+                type: "error",
+                message: e.message || "No se pudo crear la reserva.",
+            });
+            throw e;
         }
-        return reserva;
     }
 
     return (
@@ -119,7 +137,7 @@ export default function BuildingsGrid() {
                 onClose={() => setModalInvitacion({ open: false, reservaId: null })}
                 reservaId={modalInvitacion.reservaId}
                 token={token}
-                onSaved={() => {}}
+                onSaved={() => {onReservaCreada?.()}}
             />
         </div>
     );
