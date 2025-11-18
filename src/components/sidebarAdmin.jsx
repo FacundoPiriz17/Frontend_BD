@@ -1,106 +1,42 @@
 import {
-    LuLayoutDashboard,
-    LuCalendarClock,
-    LuDoorOpen,
-    LuBan,
-    LuStar,
-    LuUserCog,
-} from "react-icons/lu";
-import { useState } from "react";
+  FaChartBar,
+  FaCalendarAlt,
+  FaBuilding,
+  FaBan,
+  FaStar,
+  FaUser,
+  FaBell,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 export default function SidebarAdmin() {
-    const [currentPath, setCurrentPath] = useState("/stats");
+  return (
+    <div className="sticky top-0 h-screen w-16 hover:w-60 bg-green-800 text-white flex flex-col transition-all duration-300 overflow-y-auto overflow-x-hidden -mt-1 mb-4 p-4 border border-green-800 rounded-md group">
+      <NavItem icon={<FaChartBar />} label="Estadísticas" href="/stats" />
+      <NavItem
+        icon={<FaCalendarAlt />}
+        label="Gestionar reservas"
+        href="/reservas"
+      />
+      <NavItem icon={<FaBuilding />} label="Gestionar salas" href="/salas" />
+      <NavItem icon={<FaBan />} label="Gestionar sanciones" href="/sanciones" />
+      <NavItem icon={<FaStar />} label="Gestionar reseñas" href="/reseñas" />
+      <NavItem icon={<FaUser />} label="Gestionar usuarios" href="/usuarios" />
+    </div>
+  );
+}
 
-    const menuItems = [
-        { label: "Estadísticas", to: "/stats", icon: LuLayoutDashboard },
-        { label: "Reservas", to: "/reservas", icon: LuCalendarClock },
-        { label: "Salas", to: "/salas", icon: LuDoorOpen },
-        { label: "Sanciones", to: "/sanciones", icon: LuBan },
-        { label: "Reseñas", to: "/reseñas", icon: LuStar },
-        { label: "Usuarios", to: "/usuarios", icon: LuUserCog },
-    ];
-
-    return (
-        <div className="flex h-screen bg-slate-100">
-            <aside className="bg-white border-r border-slate-200 shadow-lg flex flex-col py-6">
-                <nav className="flex flex-col gap-2 px-3">
-                    {menuItems.map(({ label, to, icon: Icon }) => {
-                        const isActive = currentPath === to;
-
-                        return (
-                            <button
-                                key={to}
-                                onClick={() => setCurrentPath(to)}
-                                className="group relative"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-start',
-                                    width: '60px',
-                                    height: '50px',
-                                    borderRadius: '16px',
-                                    color: isActive ? '#ffffff' : '#64748b',
-                                    backgroundColor: isActive ? '#2563eb' : '#f8fafc',
-                                    textDecoration: 'none',
-                                    fontWeight: 500,
-                                    position: 'relative',
-                                    overflow: 'hidden',
-                                    transition: 'all 0.3s ease',
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.width = '160px';
-                                    e.currentTarget.style.backgroundColor = '#2563eb';
-                                    e.currentTarget.style.color = '#ffffff';
-                                    const textSpan = e.currentTarget.querySelector('.label-text');
-                                    if (textSpan) {
-                                        textSpan.style.opacity = '1';
-                                        textSpan.style.transform = 'translateX(0)';
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.width = '60px';
-                                    if (!isActive) {
-                                        e.currentTarget.style.backgroundColor = '#f8fafc';
-                                        e.currentTarget.style.color = '#64748b';
-                                    } else {
-                                        e.currentTarget.style.backgroundColor = '#2563eb';
-                                        e.currentTarget.style.color = '#ffffff';
-                                    }
-                                    const textSpan = e.currentTarget.querySelector('.label-text');
-                                    if (textSpan) {
-                                        textSpan.style.opacity = '0';
-                                        textSpan.style.transform = 'translateX(-10px)';
-                                    }
-                                }}
-                            >
-                <span
-                    className="flex items-center justify-center"
-                    style={{
-                        minWidth: '60px',
-                        height: '50px',
-                    }}
-                >
-                  <Icon size={22} />
-                </span>
-
-                                <span
-                                    className="label-text"
-                                    style={{
-                                        marginLeft: '8px',
-                                        fontSize: '14px',
-                                        whiteSpace: 'nowrap',
-                                        opacity: 0,
-                                        transform: 'translateX(-10px)',
-                                        transition: 'opacity 0.3s ease, transform 0.3s ease',
-                                    }}
-                                >
-                  {label}
-                </span>
-                            </button>
-                        );
-                    })}
-                </nav>
-            </aside>
-        </div>
-    );
+function NavItem({ icon, label, href }) {
+  return (
+    <Link
+      to={href}
+      className="flex items-center  gap-4 p-3 cursor-pointer rounded-lg hover:bg-[#fcfaee] hover:text-green-800 transition-all duration-200 group"
+    >
+      <span className="text-xl">{icon}</span>
+      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+        {label}
+      </span>
+    </Link>
+  );
 }

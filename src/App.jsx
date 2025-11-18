@@ -10,6 +10,9 @@ import FuncionarioPage from "./pages/funcionario/FuncionarioPage.jsx";
 import {ToastProvider} from "./contexts/ToastContext.jsx";
 import PerfilPage from "./pages/PerfilPage";
 import SessionExpiredPage from "./pages/SessionExpiredPage.jsx";
+import StatsPage from "./pages/stats/StatsPage";
+import SancionesPage from "./pages/admin/Sanciones.jsx";
+import ReseniasPage from "./pages/admin/Resenias.jsx";
 
 function App() {
     return (
@@ -34,6 +37,14 @@ function App() {
 
                         <Route element={<ProtectedRoute requiredRole="Administrador" />}>
                             <Route path="/admin" element={<AdminPage />} />
+                            <Route path="/stats" element={<StatsPage />} />
+                        </Route>
+
+                        <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]} />}>
+                          <Route path="/sanciones" element={<SancionesPage />} />
+                        </Route>
+                        <Route element={<ProtectedRoute requiredRoles="Administrador" />}>
+                           <Route path="/reseñas" element={<ReseniasPage />} />
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
@@ -45,6 +56,5 @@ function App() {
             </ToastProvider>
         </AuthProvider>
     );
-}
 
-export default App
+export default App;
