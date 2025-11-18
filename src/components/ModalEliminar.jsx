@@ -1,4 +1,4 @@
-export default function ModalEliminar({open, onClose, onConfirm, objeto = "este elemento"   // <- complemento dinámico
+export default function ModalEliminar({open, onClose, onConfirm, objeto = "este elemento"   //complemento dinámico
 }) {
 
     if (!open) return null;
