@@ -104,8 +104,12 @@ export default function SancionesPage() {
                                 >
                                     <div>
                                         <h3 className="text-xl font-semibold text-green-800">
-                                            CI: {s.ci_participante}
+                                            Nombre: {s.nombre_completo ?? "Desconocido"}
                                         </h3>
+
+                                        <p className="text-gray-700 -mt-1 mb-2">
+                                            <span className="font-semibold">CI: {s.ci_participante}</span>
+                                        </p>
 
                                         <p className="text-gray-600 mt-1">
                                             <span className="font-semibold">Motivo:</span> {s.motivo}
@@ -120,7 +124,6 @@ export default function SancionesPage() {
                                         </p>
                                     </div>
 
-                                    {/*Botones de eliminar y editar */}
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleOpenEditar(s)}
@@ -138,6 +141,7 @@ export default function SancionesPage() {
                                     </div>
                                 </div>
                             ))}
+
 
                             {sanciones.length === 0 && (
                                 <div className="text-gray-600 text-sm">No hay sanciones registradas.</div>

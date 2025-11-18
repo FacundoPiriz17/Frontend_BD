@@ -94,12 +94,12 @@ export default function ReseniasPage() {
                                     <div className="space-y-1">
 
                                         <h3 className="text-2xl font-bold text-green-800">
-                                            Reserva #{r.id_reserva}
+                                            {r.nombre_sala}
                                         </h3>
 
-                                        <h4 className="text-lg font-semibold text-gray-700">
-                                            CI del participante: {r.ci_participante}
-                                        </h4>
+                                        <h3 className="text-xl font-semibold text-green-800">
+                                            {r.nombre_completo} ({r.ci_participante})
+                                        </h3>
 
                                         {/* Estrellas */}
                                         <div className="flex items-center gap-1">
@@ -117,6 +117,14 @@ export default function ReseniasPage() {
                                             ))}
                                         </div>
 
+                                        <p className="text-gray-700 -mt-1 mb-2">
+                                            <span className="font-semibold">Edificio:</span> {r.edificio}
+                                        </p>
+
+                                        <p className="text-gray-600">
+                                            <span className="font-semibold">ID_Reserva: </span> #{r.id_reserva}
+                                        </p>
+
                                         <p className="text-gray-600">
                                             <span className="font-semibold">Fecha:</span> {r.fecha_publicacion}
                                         </p>
@@ -124,10 +132,9 @@ export default function ReseniasPage() {
                                         <p className="text-gray-600">
                                             <span className="font-semibold">Descripción:</span> {r.descripcion}
                                         </p>
-                                    </div>
 
-                                    {/* BOTONES */}
-                                    <div className="flex gap-2 flex-col">
+                                    </div>
+                                    <div className="flex flex-col gap-7">
                                         <button
                                             onClick={() => handleOpenEditar(r)}
                                             className="px-4 py-2 border border-green-700 text-green-700 rounded-lg hover:bg-green-50 transition"
@@ -142,6 +149,7 @@ export default function ReseniasPage() {
                                             Eliminar
                                         </button>
                                     </div>
+
                                 </div>
                             ))}
 
