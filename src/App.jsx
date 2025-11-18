@@ -20,35 +20,35 @@ function App() {
             <ToastProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route element={<Navigate to="/login"/>} path="/" exact />
+                        <Route element={<Navigate to="/login"/>} path="/" exact/>
 
-                        <Route element={<LoginPage />} path="/login" exact />
+                        <Route element={<LoginPage/>} path="/login" exact/>
 
-                        <Route path="/unauthorized" element={<UnauthorizedPage />} />
-                        <Route path="/session-expired" element={<SessionExpiredPage />} />
+                        <Route path="/unauthorized" element={<UnauthorizedPage/>}/>
+                        <Route path="/session-expired" element={<SessionExpiredPage/>}/>
 
-                        <Route element={<ProtectedRoute requiredRole="Participante" />}>
-                            <Route path="/participante" element={<ParticipantePage />} />
+                        <Route element={<ProtectedRoute requiredRole="Participante"/>}>
+                            <Route path="/participante" element={<ParticipantePage/>}/>
                         </Route>
 
-                        <Route element={<ProtectedRoute requiredRole="Funcionario" />}>
-                            <Route path="/funcionario" element={<FuncionarioPage />} />
+                        <Route element={<ProtectedRoute requiredRole="Funcionario"/>}>
+                            <Route path="/funcionario" element={<FuncionarioPage/>}/>
                         </Route>
 
-                        <Route element={<ProtectedRoute requiredRole="Administrador" />}>
-                            <Route path="/admin" element={<AdminPage />} />
-                            <Route path="/stats" element={<StatsPage />} />
+                        <Route element={<ProtectedRoute requiredRole="Administrador"/>}>
+                            <Route path="/admin" element={<AdminPage/>}/>
+                            <Route path="/stats" element={<StatsPage/>}/>
                         </Route>
 
-                        <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]} />}>
-                          <Route path="/sanciones" element={<SancionesPage />} />
+                        <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]}/>}>
+                            <Route path="/sanciones" element={<SancionesPage/>}/>
                         </Route>
-                        <Route element={<ProtectedRoute requiredRoles="Administrador" />}>
-                           <Route path="/reseñas" element={<ReseniasPage />} />
+                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
+                            <Route path="/reseñas" element={<ReseniasPage/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
-                            <Route path="/perfil" element={<PerfilPage />} />
+                            <Route path="/perfil" element={<PerfilPage/>}/>
                         </Route>
 
                     </Routes>
@@ -56,5 +56,6 @@ function App() {
             </ToastProvider>
         </AuthProvider>
     );
+}
 
 export default App;
