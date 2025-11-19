@@ -14,6 +14,7 @@ import StatsPage from "./pages/stats/StatsPage";
 import SancionesPage from "./pages/admin/Sanciones.jsx";
 import ReseniasPage from "./pages/admin/Resenias.jsx";
 import ReservasPage from "./pages/admin/Reservas.jsx";
+import UsuariosPage from "./pages/admin/Usuarios.jsx";
 
 function App() {
     return (
@@ -49,6 +50,9 @@ function App() {
                         </Route>
                         <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
                             <Route path="/reservas" element={<ReservasPage/>}/>
+                        </Route>
+                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
+                            <Route path="/usuarios" element={<UsuariosPage/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
