@@ -1,27 +1,15 @@
-export default function ReservationDetailModal({
-                                                   open,
-                                                   onClose,
-                                                   reserva = {},
-                                               }) {
+import React from "react";
+
+export default function ReservationDetailModal({ open, onClose, reserva = {} }) {
     if (!open) return null;
-    const {
-        sala,
-        edificio,
-        fecha,
-        turno,
-        participantes = [],
-        capacidad,
-        estado,
-        organizador,
-    } = reserva;
+
+    const { sala, edificio, fecha, turno, participantes = [], capacidad, estado, organizador } = reserva;
 
     return (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
             <div className="w-full max-w-2xl rounded-2xl bg-white p-4 shadow-xl">
                 <div className="mb-3 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-slate-900">
-                        Detalle de reserva
-                    </h3>
+                    <h3 className="text-lg font-semibold text-slate-900">Detalle de reserva</h3>
                     <button
                         onClick={onClose}
                         className="rounded-xl border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
@@ -37,7 +25,9 @@ export default function ReservationDetailModal({
                     <div><span className="text-slate-600">Capacidad:</span> {capacidad}</div>
                     <div><span className="text-slate-600">Estado:</span> {estado}</div>
                     {organizador && (
-                        <div><span className="text-slate-600">Organiza:</span> {organizador.nombre} (CI {organizador.ci})</div>
+                        <div>
+                            <span className="text-slate-600">Organiza:</span> {organizador.nombre} (CI {organizador.ci})
+                        </div>
                     )}
                 </div>
 
@@ -49,32 +39,21 @@ export default function ReservationDetailModal({
                         ) : (
                             <ul className="divide-y divide-slate-200">
                                 {participantes.map((p, idx) => {
-                                    const estado = p.estado_confirmacion || "Pendiente"; // fallback por si acaso
+                                    const estado = p.estado_confirmacion || "Pendiente";
 
                                     let badgeClasses = "bg-yellow-100 text-yellow-700";
-                                    if (estado === "Confirmado") {
-                                        badgeClasses = "bg-green-100 text-green-700";
-                                    } else if (estado === "Rechazado") {
-                                        badgeClasses = "bg-red-100 text-red-700";
-                                    }
+                                    if (estado === "Confirmado") badgeClasses = "bg-green-100 text-green-700";
+                                    else if (estado === "Rechazado") badgeClasses = "bg-red-100 text-red-700";
 
                                     return (
                                         <li key={idx} className="flex items-center justify-between px-3 py-2">
                                             <div className="text-sm text-slate-800">
                                                 {p.nombre ?? "Participante"} — CI {p.ci}
-                                                {p.asistencia && (
-                                                    <span className="ml-2 text-xs text-slate-500">
-                                                    ({p.asistencia})
-                                                        </span>
-                                                )}
+                                                {p.asistencia && <span className="ml-2 text-xs text-slate-500">({p.asistencia})</span>}
                                             </div>
-                                            <span
-                                                className={[
-                                                    "rounded-full px-2 py-0.5 text-xs font-semibold",
-                                                    badgeClasses,
-                                                ].join(" ")}>
-                                            {estado}
-                                            </span>
+                                            <span className={["rounded-full px-2 py-0.5 text-xs font-semibold", badgeClasses].join(" ")}>
+                        {estado}
+                      </span>
                                         </li>
                                     );
                                 })}
