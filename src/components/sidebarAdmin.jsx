@@ -44,18 +44,19 @@ export default function SidebarAdmin() {
 
     return (
         <div
-            className={`fixed left-0 top-0 bottom-0 w-20 hover:w-64
+            className={`sticky left-0 top-0 bottom-0 w-20 hover:w-64
         ${sidebarBgClass} text-white flex flex-col transition-all duration-300 ease-in-out
         overflow-hidden border-r-2 ${sidebarBorderClass} group shadow-xl z-30`}
         >
             <nav className="flex-1 flex flex-col justify-start pt-6 overflow-y-auto overflow-x-hidden">
                 <div className="flex flex-col gap-3">
-                    <NavItem
-                        icon={<FaChartBar />}
-                        label="Estadísticas"
-                        href="/stats"
-                        hoverClass={itemHoverClass}
-                    />
+                        <NavItem
+                            icon={<FaChartBar />}
+                            label="Estadísticas"
+                            href="/stats"
+                            hoverClass={itemHoverClass}
+                        />
+
                     <NavItem
                         icon={<FaCalendarAlt />}
                         label="Gestionar reservas"
