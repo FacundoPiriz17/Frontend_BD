@@ -13,6 +13,7 @@ import SessionExpiredPage from "./pages/SessionExpiredPage.jsx";
 import StatsPage from "./pages/stats/StatsPage";
 import SancionesPage from "./pages/admin/Sanciones.jsx";
 import ReseniasPage from "./pages/admin/Resenias.jsx";
+import ReservasPage from "./pages/admin/Reservas.jsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,6 +48,9 @@ function App() {
                         </Route>
                         <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
                             <Route path="/reseñas" element={<ReseniasPage/>}/>
+                        </Route>
+                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
+                            <Route path="/reservas" element={<ReservasPage/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
