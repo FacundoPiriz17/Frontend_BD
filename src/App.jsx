@@ -13,6 +13,7 @@ import StatsPage from "./pages/stats/StatsPage";
 import SancionesPage from "./pages/admin/Sanciones.jsx";
 import ReseniasPage from "./pages/admin/Resenias.jsx";
 import ReservasPage from "./pages/admin/Reservas.jsx";
+import UsuariosPage from "./pages/admin/Usuarios.jsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,6 +48,9 @@ function App() {
                             <Route path="/stats" element={<StatsPage/>}/>
                             <Route path="/reseñas" element={<ReseniasPage/>}/>
                             <Route path="/reservas" element={<ReservasPage/>}/>
+                        </Route>
+                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
+                            <Route path="/usuarios" element={<UsuariosPage/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
