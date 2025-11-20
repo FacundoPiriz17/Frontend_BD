@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
-import { useToast } from "../contexts/ToastContext";
+import { toast } from "react-toastify";
 
 function getTokenExp(token) {
     if (!token) return null;
@@ -38,10 +38,8 @@ function formatTimeLeft(sec) {
 
 export default function PerfilPage() {
     const { user, token, updateToken } = useAuth();
-    const { showToast } = useToast();
 
     const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
     const [savingPassword, setSavingPassword] = useState(false);
 
     const [perfil, setPerfil] = useState(null);
@@ -88,15 +86,11 @@ export default function PerfilPage() {
 
             updateToken(nuevoToken);
 
-            showToast({
-                type: "success",
-                message: "Sesión renovada correctamente.",
-            });
+            toast.success("Sesión renovada correctamente.");
+
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo renovar la sesión.",
-            });
+            toast.error(e.message || "No se pudo renovar la sesión.");
+
         } finally {
             setRefreshingSession(false);
         }
@@ -139,10 +133,7 @@ export default function PerfilPage() {
                 });
             } catch (e) {
                 if (!ignore) {
-                    showToast({
-                        type: "error",
-                        message: e.message || "No se pudo cargar el perfil.",
-                    });
+                    toast.error(e.message || "No se pudo cargar el perfil.");
                 }
             } finally {
                 if (!ignore) setLoading(false);
@@ -153,7 +144,7 @@ export default function PerfilPage() {
         return () => {
             ignore = true;
         };
-    }, [token, user?.ci, user?.nombre, user?.apellido, user?.rol, user?.email, showToast]);
+    }, [token, user?.ci, user?.nombre, user?.apellido, user?.rol, user?.email]);
 
     useEffect(() => {
         let ignore = false;
@@ -186,17 +177,12 @@ export default function PerfilPage() {
         e.preventDefault();
 
         if (!passwordForm.actual || !passwordForm.nueva || !passwordForm.confirmacion) {
-            showToast({
-                type: "error",
-                message: "Completa todos los campos de contraseña.",
-            });
+            toast.error("Completa todos los campos de contraseña.");
             return;
         }
         if (passwordForm.nueva !== passwordForm.confirmacion) {
-            showToast({
-                type: "error",
-                message: "La nueva contraseña y su confirmación no coinciden.",
-            });
+            toast.error("La nueva contraseña y su confirmación no coinciden.");
+
             return;
         }
 
@@ -211,16 +197,12 @@ export default function PerfilPage() {
                 },
             });
 
-            showToast({
-                type: "success",
-                message: "Contraseña actualizada correctamente.",
-            });
+            toast.success("Contraseña actualizada correctamente.");
+
             setPasswordForm({ actual: "", nueva: "", confirmacion: "" });
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo cambiar la contraseña.",
-            });
+            toast.error(e.message || "No se pudo cambiar la contraseña.");
+
         } finally {
             setSavingPassword(false);
         }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { isValidEmail } from "../utils/validators.js";
 import { apiFetch } from "../utils/api";
-import { useToast } from "../contexts/ToastContext";
+import { toast } from "react-toastify";
 
 export default function InvitacionModal({
                                             open,
@@ -10,7 +10,6 @@ export default function InvitacionModal({
                                             token,
                                             onSaved,
                                         }) {
-    const { showToast } = useToast();
     const [entrada, setEntrada] = useState("");
     const [invitados, setInvitados] = useState([]);
     const [enviando, setEnviando] = useState(false);
@@ -65,18 +64,13 @@ export default function InvitacionModal({
                     },
                 });
             }
-            showToast({
-                type: "success",
-                message: "Invitaciones enviadas correctamente.",
-            });
+            toast.success("Invitaciones enviadas correctamente.");
+
             onSaved?.();
             onClose?.();
         } catch (e) {
             setError(e.message || "No se pudo enviar la invitación.");
-            showToast({
-                type: "error",
-                message: e.message || "Error al enviar invitaciones.",
-            });
+            toast.error(e.message || "Error al enviar invitaciones.");
         } finally {
             setEnviando(false);
         }

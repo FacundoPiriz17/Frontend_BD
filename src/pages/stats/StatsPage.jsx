@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import ucuRoomsLogo from "../../assets/ucurooms_White.png";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
+import Navbar from "../../components/Navbar.jsx";
 import {
   getSalasMasReservadas,
   getTurnosMasDemandados,
@@ -86,11 +86,6 @@ export default function StatsPage() {
     cargarEstadisticas();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex items-center justify-center">
@@ -114,20 +109,7 @@ export default function StatsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
-      <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-        <div className="flex items-center space-x-3">
-          <img src={ucuRoomsLogo} alt="UCU Rooms" className="w-15 h-15 mr-20" />
-          <h1 className="text-xl font-semibold text-[#fcfaee]">
-            Estadísticas del Sistema
-          </h1>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="text-green-800 bg-[#fcfaee] hover:bg-[#fcfaee]-200 px-4 py-2 rounded transition"
-        >
-          Cerrar sesión
-        </button>
-      </nav>
+      <Navbar/>
 
       <div className="flex flex-1">
         <SidebarAdmin />

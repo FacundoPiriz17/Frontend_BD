@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
 import { apiFetch } from "../utils/api";
+import { toast } from "react-toastify";
 
 export default function ResenaModal({ open, onClose, reserva, token, onSaved }) {
     const { user } = useAuth();
-    const { showToast } = useToast();
 
     const [rating, setRating] = useState(0);
     const [descripcion, setDescripcion] = useState("");
@@ -47,16 +46,14 @@ export default function ResenaModal({ open, onClose, reserva, token, onSaved }) 
                     descripcion: descripcion || null,
                 },
             });
-            showToast({
-                type: "success",
-                message: "Reseña registrada correctamente.",
-            });
+            toast.success("Reseña registrada correctamente.");
+
             onSaved?.(reserva);
             onClose?.();
         } catch (e) {
             const msg = e.message || "No se pudo registrar la reseña.";
             setError(msg);
-            showToast({ type: "error", message: msg });
+            toast.error(msg);
         } finally {
             setSaving(false);
         }

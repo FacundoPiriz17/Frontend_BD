@@ -1,6 +1,25 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { apiFetch } from "../utils/api.js";
 
 const AuthContext = createContext();
+
+function getTokenExp(token) {
+    if (!token) return null;
+    try {
+        const parts = token.split(".");
+        if (parts.length !== 3) return null;
+
+        const base64 = parts[1]
+            .replace(/-/g, "+")
+            .replace(/_/g, "/")
+            .padEnd(parts[1].length + (4 - (parts[1].length % 4)) % 4, "=");
+
+        const json = JSON.parse(atob(base64));
+        return json.exp || null; // en segundos
+    } catch {
+        return null;
+    }
+}
 
 export function AuthProvider({ children }) {
     const [token, setToken] = useState(() => localStorage.getItem("token") || null);
@@ -28,6 +47,34 @@ export function AuthProvider({ children }) {
         }
     }, [token]);
 
+    useEffect(() => {
+        if (!token) return;
+
+        const exp = getTokenExp(token);
+        if (!exp) return;
+
+        const msUntilExp = exp * 1000 - Date.now();
+
+        if (msUntilExp <= 0) {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "/session-expired";
+            return;
+        }
+
+        const timeoutId = setTimeout(() => {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "/session-expired";
+        }, msUntilExp);
+
+        return () => clearTimeout(timeoutId);
+    }, [token]);
+
     const saveAuth = (usuario, nuevoToken) => {
         setUser(usuario);
         setToken(nuevoToken);
@@ -37,22 +84,15 @@ export function AuthProvider({ children }) {
 
     const login = async (email, contrasena) => {
         try {
-            const res = await fetch("http://127.0.0.1:5000/login/inicio", {
+            const data = await apiFetch("/login/inicio", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, contrasena }),
+                body: { email, contrasena },
             });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                saveAuth(data.usuario, data.token);
-                return { ok: true };
-            } else {
-                return { ok: false, error: data.error };
-            }
+            saveAuth(data.usuario, data.token);
+            return { ok: true };
         } catch (err) {
-            return { ok: false, error: "Error de conexión con el servidor" };
+            return { ok: false, error: err.message || "Error de conexión con el servidor" };
         }
     };
 
