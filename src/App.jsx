@@ -14,59 +14,65 @@ import SancionesPage from "./pages/admin/Sanciones.jsx";
 import ReseniasPage from "./pages/admin/Resenias.jsx";
 import ReservasPage from "./pages/admin/Reservas.jsx";
 import UsuariosPage from "./pages/admin/Usuarios.jsx";
+import SalasPage from "./pages/admin/SalasPage.jsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-    return (
-        <AuthProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route element={<Navigate to="/login"/>} path="/" exact/>
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Navigate to="/login" />} path="/" exact />
 
-                        <Route element={<LoginPage/>} path="/login" exact/>
+          <Route element={<LoginPage />} path="/login" exact />
 
-                        <Route path="/unauthorized" element={<UnauthorizedPage/>}/>
-                        <Route path="/session-expired" element={<SessionExpiredPage/>}/>
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/session-expired" element={<SessionExpiredPage />} />
 
-                        <Route element={<ProtectedRoute requiredRole="Participante"/>}>
-                            <Route path="/participante" element={<ParticipantePage/>}/>
-                        </Route>
+          <Route element={<ProtectedRoute requiredRole="Participante" />}>
+            <Route path="/participante" element={<ParticipantePage />} />
+          </Route>
 
-                        <Route element={<ProtectedRoute requiredRole="Funcionario"/>}>
-                            <Route path="/funcionario" element={<FuncionarioPage/>}/>
-                        </Route>
+          <Route element={<ProtectedRoute requiredRole="Funcionario" />}>
+            <Route path="/funcionario" element={<FuncionarioPage />} />
+          </Route>
 
-                        <Route element={<ProtectedRoute requiredRole="Administrador"/>}>
-                            <Route path="/admin" element={<AdminPage/>}/>
-                            {/*<Route path="/salas" element={<SalasPage />} />*/}
-                        </Route>
+          <Route element={<ProtectedRoute requiredRole="Administrador" />}>
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/salas" element={<SalasPage />} />
+          </Route>
 
-                        <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]}/>}>
-                            <Route path="/sanciones" element={<SancionesPage/>}/>
-                            <Route path="/stats" element={<StatsPage/>}/>
-                            <Route path="/reseñas" element={<ReseniasPage/>}/>
-                            <Route path="/reservas" element={<ReservasPage/>}/>
-                        </Route>
-                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
-                            <Route path="/usuarios" element={<UsuariosPage/>}/>
-                        </Route>
+          <Route
+            element={
+              <ProtectedRoute
+                requiredRoles={["Administrador", "Funcionario"]}
+              />
+            }
+          >
+            <Route path="/sanciones" element={<SancionesPage />} />
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/reseñas" element={<ReseniasPage />} />
+            <Route path="/reservas" element={<ReservasPage />} />
+          </Route>
+          <Route element={<ProtectedRoute requiredRoles="Administrador" />}>
+            <Route path="/usuarios" element={<UsuariosPage />} />
+          </Route>
 
-                        <Route element={<ProtectedRoute/>}>
-                            <Route path="/perfil" element={<PerfilPage/>}/>
-                        </Route>
-
-                    </Routes>
-                </BrowserRouter>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    newestOnTop
-                    theme="light"
-                />
-        </AuthProvider>
-    );
+          <Route element={<ProtectedRoute />}>
+            <Route path="/perfil" element={<PerfilPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        newestOnTop
+        theme="light"
+      />
+    </AuthProvider>
+  );
 }
 
 export default App;
