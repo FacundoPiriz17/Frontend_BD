@@ -7,6 +7,7 @@ import { apiFetch } from "../../utils/api.js";
 
 import ModalEditarResena from "../../components/ModalEditarResenia.jsx";
 import ModalEliminar from "../../components/ModalEliminar.jsx";
+import Navbar from "../../components/Navbar.jsx";
 
 export default function ReseniasPage() {
     const { user, logout } = useAuth();
@@ -58,19 +59,7 @@ export default function ReseniasPage() {
         <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
 
             {/* NAV SUPERIOR */}
-            <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-                <div className="flex items-center space-x-3">
-                    <img src={ucuRoomsLogo} alt="UCU Rooms" className="w-15 h-15 mr-20" />
-                    <h1 className="text-xl font-semibold text-[#fcfaee]">Panel del Administrador</h1>
-                </div>
-
-                <button
-                    onClick={handleLogout}
-                    className="text-green-800 bg-[#fcfaee] hover:bg-[#fcfaee]/90 px-4 py-2 rounded transition"
-                >
-                    Cerrar sesión
-                </button>
-            </nav>
+            <Navbar/>
 
             <div className="flex flex-1 h-full">
                 <SidebarAdmin />

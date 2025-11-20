@@ -9,7 +9,7 @@ import ResenaModal from "../../components/ResenaModal";
 import ReviewCard from "../../components/ReviewCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiFetch } from "../../utils/api";
-import { useToast } from "../../contexts/ToastContext";
+import { toast } from "react-toastify";
 
 function formatFecha(fechaStr) {
     if (!fechaStr) return "";
@@ -25,7 +25,6 @@ function formatFecha(fechaStr) {
 
 export default function ParticipantePage() {
     const {token, user} = useAuth();
-    const { showToast } = useToast();
     const [tab, setTab] = useState("MIS");
     const [misReservas, setMisReservas] = useState([]);
     const [organizo, setOrganizo] = useState([]);
@@ -53,7 +52,7 @@ export default function ParticipantePage() {
                 const raw = Array.isArray(data) ? data : [];
 
                 const mapped = raw
-                    .filter((r) => r.estado !== "Cancelada")
+                    .filter((r) => r.estado === "Activa")
                     .map((r) => {
                         const soyOrganizador =
                             r.soyOrganizador === 1 || r.soyOrganizador === true;
@@ -83,10 +82,8 @@ export default function ParticipantePage() {
             } catch (e) {
                 if (!ignore) {
                     setMisReservas([]);
-                    showToast({
-                        type: "error",
-                        message: e.message || "No se pudieron cargar tus reservas.",
-                    });
+                    toast.error(e.message || "No se pudieron cargar tus reservas.");
+
                 }
             }
         }
@@ -95,7 +92,7 @@ export default function ParticipantePage() {
         return () => {
             ignore = true;
         };
-    }, [token, user?.ci, showToast, reloadFlag]);
+    }, [token, user?.ci, reloadFlag]);
 
     useEffect(() => {
         let ignore = false;
@@ -113,7 +110,7 @@ export default function ParticipantePage() {
                 const raw = Array.isArray(data) ? data : [];
 
                 const mapped = raw
-                    .filter((r) => r.estado !== "Cancelada")
+                    .filter((r) => r.estado === "Activa")
                     .map((r) => {
                         const soyOrganizador =
                             r.soyOrganizador === 1 || r.soyOrganizador === true;
@@ -137,11 +134,10 @@ export default function ParticipantePage() {
             } catch (e) {
                 if (!ignore) {
                     setOrganizo([]);
-                    showToast({
-                        type: "error",
-                        message:
-                            e.message || "No se pudieron cargar las reservas que organizas.",
-                    });
+                    toast.error(
+                        e.message || "No se pudieron cargar las reservas que organizas."
+                    );
+
                 }
             }
         }
@@ -150,7 +146,7 @@ export default function ParticipantePage() {
         return () => {
             ignore = true;
         };
-    }, [tab, token, user?.ci, showToast, reloadFlag]);
+    }, [tab, token, user?.ci, reloadFlag]);
 
     useEffect(() => {
         let ignore = false;
@@ -163,18 +159,14 @@ export default function ParticipantePage() {
                 if (!ignore) setPendientesResena(Array.isArray(data) ? data : []);
             } catch (e) {
                 if (!ignore) setPendientesResena([]);
-                showToast({
-                    type: "error",
-                    message:
-                        e.message || "No se pudieron cargar las reservas para reseñar.",
-                });
+                toast.error(e.message || "No se pudieron cargar las reservas para reseñar.");
             }
         }
         load();
         return () => {
             ignore = true;
         };
-    }, [tab, token, user?.ci, showToast]);
+    }, [tab, token, user?.ci]);
 
     async function handleCancel(reserva) {
         try {
@@ -189,15 +181,11 @@ export default function ParticipantePage() {
                 prev.filter((r) => r.id_reserva !== reserva.id_reserva)
             );
             triggerReload();
-            showToast({
-                type: "success",
-                message: "Reserva cancelada correctamente.",
-            });
+            toast.success("Reserva cancelada correctamente.");
+
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo cancelar la reserva.",
-            });
+            toast.error(e.message || "No se pudo cancelar la reserva.");
+
         }
     }
 
@@ -211,15 +199,11 @@ export default function ParticipantePage() {
                 prev.filter((r) => r.id_reserva !== reserva.id_reserva)
             );
             triggerReload();
-            showToast({
-                type: "success",
-                message: "Saliste de la reserva correctamente.",
-            });
+            toast.success("Saliste de la reserva correctamente.");
+
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo salir de la reserva.",
-            });
+            toast.error(e.message || "No se pudo salir de la reserva.");
+
         }
     }
 
@@ -243,10 +227,8 @@ export default function ParticipantePage() {
             };
             setDetail({open: true, reserva: mapped});
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo cargar el detalle de la reserva.",
-            });
+            toast.error(e.message || "No se pudo cargar el detalle de la reserva.");
+
         }
     }
 
@@ -269,7 +251,7 @@ export default function ParticipantePage() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar />
+            <Navbar onInvitationsChanged={triggerReload} />
             <main className="flex-1">
                 <div className="mx-auto max-w-7xl px-4 py-6">
                     <div className="mb-6 flex flex-wrap gap-2">
