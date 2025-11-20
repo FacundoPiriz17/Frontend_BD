@@ -7,11 +7,10 @@ import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
 import uculogo from "../assets/ucurooms.png";
 import InvitacionModal from "./InvitacionModal.jsx";
-import { useToast } from "../contexts/ToastContext";
+import { toast } from "react-toastify";
 
 export default function BuildingsGrid({ onReservaCreada }) {
     const {token, user} = useAuth();
-    const { showToast } = useToast();
     const [edificios, setEdificios] = useState([]);
     const [campus, setCampus] = useState("Todos");
     const [modalReserva, setModalReserva] = useState({ open: false, edificio: "" });
@@ -66,20 +65,14 @@ export default function BuildingsGrid({ onReservaCreada }) {
                 },
             });
             setModalReserva({ open: false, edificio: "" });
-            showToast({
-                type: "success",
-                message: "Reserva creada correctamente.",
-            });
+            toast.success("Reserva creada correctamente.");
             if (reserva?.id_reserva) {
                 setModalInvitacion({ open: true, reservaId: reserva.id_reserva });
             }
             onReservaCreada?.();
             return reserva;
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo crear la reserva.",
-            });
+            toast.error(e.message || "No se pudo crear la reserva.");
             throw e;
         }
     }

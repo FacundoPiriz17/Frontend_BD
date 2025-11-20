@@ -1,18 +1,25 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { apiFetch } from "../utils/api";
-import { useToast } from "../contexts/ToastContext";
+import { toast } from "react-toastify";
+import { FaLock } from "react-icons/fa"; // Ícono de candado
+import ucuRoomsLogo from "../assets/ucurooms.png"; // Logo UcuRooms
 
 export default function SessionExpiredPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const { token, updateToken, logout } = useAuth();
-    const { showToast } = useToast();
 
     const [loadingRefresh, setLoadingRefresh] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const fromPath = location.state?.from?.pathname || "/perfil";
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setVisible(true), 100);
+        return () => clearTimeout(timeout);
+    }, []);
 
     async function handleRefresh() {
         try {
@@ -29,17 +36,13 @@ export default function SessionExpiredPage() {
 
             updateToken(nuevoToken);
 
-            showToast({
-                type: "success",
-                message: "Sesión renovada correctamente.",
-            });
+            toast.success("Sesión renovada correctamente.");
+
 
             navigate(fromPath, { replace: true });
         } catch (e) {
-            showToast({
-                type: "error",
-                message: e.message || "No se pudo renovar la sesión.",
-            });
+            toast.error(e.message || "No se pudo renovar la sesión.");
+
         } finally {
             setLoadingRefresh(false);
         }
@@ -51,12 +54,36 @@ export default function SessionExpiredPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-md border border-slate-200">
-                <h1 className="text-xl font-bold text-slate-900 mb-2 text-center">
+        <div className="relative flex h-screen justify-center items-center overflow-hidden bg-[url(https://i.ytimg.com/vi/I2_PamgttyQ/maxresdefault.jpg)] bg-cover bg-center">
+
+            <div className="absolute inset-0 bg-[url('https://i.ytimg.com/vi/I2_PamgttyQ/maxresdefault.jpg')] bg-cover bg-center blur-sm scale-105"></div>
+
+            <div
+                className={`relative bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 z-10 transform transition-all duration-700 ease-out
+                ${
+                    visible
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-10"
+                }
+            `}
+            >
+                <div className="flex justify-center mb-3">
+                    <img
+                        src={ucuRoomsLogo}
+                        alt="Logo de Ucu Rooms"
+                        className="w-20 h-20 object-contain drop-shadow-md"
+                    />
+                </div>
+
+                <div className="mx-auto mb-4 flex items-center justify-center h-14 w-14 rounded-full bg-blue-900 shadow-md">
+                    <FaLock className="text-white text-2xl" />
+                </div>
+
+                <h1 className="text-xl sm:text-2xl font-semibold text-center mb-2 text-blue-900 drop-shadow-sm">
                     Sesión expirada
                 </h1>
-                <p className="text-sm text-slate-600 mb-4 text-center">
+
+                <p className="text-sm text-slate-700 mb-6 text-center">
                     Tu sesión ha caducado o tu token ya no es válido. Elegí cómo querés continuar.
                 </p>
 
@@ -65,7 +92,7 @@ export default function SessionExpiredPage() {
                         type="button"
                         onClick={handleRefresh}
                         disabled={loadingRefresh || !token}
-                        className="w-full inline-flex justify-center items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-60"
+                        className="w-full bg-blue-900 text-white p-2 rounded-xl hover:bg-blue-700 transition text-sm font-semibold disabled:opacity-60"
                     >
                         {loadingRefresh ? "Renovando sesión..." : "Renovar sesión"}
                     </button>
@@ -73,7 +100,7 @@ export default function SessionExpiredPage() {
                     <button
                         type="button"
                         onClick={handleGoLogin}
-                        className="w-full inline-flex justify-center items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50"
+                        className="w-full border border-gray-300 text-slate-800 p-2 rounded-xl bg-white hover:bg-slate-50 transition text-sm font-semibold"
                     >
                         Volver al login
                     </button>
