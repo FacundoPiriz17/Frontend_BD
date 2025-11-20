@@ -7,7 +7,6 @@ import UnauthorizedPage from "./pages/UnauthorizedPage.jsx";
 import ParticipantePage from "./pages/participante/ParticipantePage.jsx";
 import AdminPage from "./pages/admin/AdminPage.jsx";
 import FuncionarioPage from "./pages/funcionario/FuncionarioPage.jsx";
-import {ToastProvider} from "./contexts/ToastContext.jsx";
 import PerfilPage from "./pages/PerfilPage";
 import SessionExpiredPage from "./pages/SessionExpiredPage.jsx";
 import StatsPage from "./pages/stats/StatsPage";
@@ -40,16 +39,13 @@ function App() {
 
                         <Route element={<ProtectedRoute requiredRole="Administrador"/>}>
                             <Route path="/admin" element={<AdminPage/>}/>
-                            <Route path="/stats" element={<StatsPage/>}/>
+                            {/*<Route path="/salas" element={<SalasPage />} />*/}
                         </Route>
 
                         <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]}/>}>
                             <Route path="/sanciones" element={<SancionesPage/>}/>
-                        </Route>
-                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
+                            <Route path="/stats" element={<StatsPage/>}/>
                             <Route path="/reseñas" element={<ReseniasPage/>}/>
-                        </Route>
-                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
                             <Route path="/reservas" element={<ReservasPage/>}/>
                         </Route>
 
@@ -63,7 +59,7 @@ function App() {
                     position="top-right"
                     autoClose={3000}
                     newestOnTop
-                    theme="colored"
+                    theme="light"
                 />
         </AuthProvider>
     );
