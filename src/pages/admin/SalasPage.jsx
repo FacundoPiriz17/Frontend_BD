@@ -20,7 +20,7 @@ export default function SalasPage() {
   const [edificios, setEdificios] = useState([]);
   const [edificio, setEdificio] = useState("");
   const [input, setInput] = useState("");
-  const [disponibilidad, setDisponibilidad] = useState(false);
+  const [disponibilidad, setDisponibilidad] = useState(true);
 
   const fetchSalas = async () => {
     setLoading(true);
