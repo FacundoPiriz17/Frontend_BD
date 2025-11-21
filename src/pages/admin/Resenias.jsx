@@ -11,7 +11,6 @@ import Navbar from "../../components/Navbar.jsx";
 
 export default function ReseniasPage() {
     const { user, logout } = useAuth();
-    const navigate = useNavigate();
     const { token } = useAuth();
 
     const [resenias, setResenias] = useState([]);
@@ -19,12 +18,7 @@ export default function ReseniasPage() {
     const [modalEliminar, setModalEliminar] = useState({ open: false, id: null });
     const [modalEditar, setModalEditar] = useState({ open: false, resena: null });
 
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
 
-    // Cargar reseñas
     useEffect(() => {
         let ignore = false;
 
@@ -57,23 +51,19 @@ export default function ReseniasPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
-
-            {/* NAV SUPERIOR */}
-            <Navbar/>
+            <Navbar />
 
             <div className="flex flex-1 h-full">
                 <SidebarAdmin />
 
                 <div className="flex-1 overflow-auto py-8 px-4">
                     <main className="max-w-3xl mx-auto w-full">
-
-                        {/* Título y botón */}
                         <div className="flex justify-between items-center px-4 mb-6">
-                            <h2 className="text-3xl font-bold text-green-800">Gestión de Reseñas</h2>
-
+                            <h2 className="text-3xl font-bold text-green-800">
+                                Gestión de Reseñas
+                            </h2>
                         </div>
 
-                        {/* LISTADO */}
                         <div className="flex flex-col gap-4 px-4">
                             {resenias.map((r) => (
                                 <div
@@ -81,16 +71,16 @@ export default function ReseniasPage() {
                                     className="bg-white shadow-md rounded-xl p-5 w-full flex justify-between items-center border border-gray-200"
                                 >
                                     <div className="space-y-1">
-
                                         <h3 className="text-2xl font-bold text-green-800">
                                             {r.nombre_sala}
                                         </h3>
 
                                         <h3 className="text-xl font-semibold text-green-800">
-                                            {r.nombre_completo} ({r.ci_participante})
+                                            {r.ci_participante == null
+                                                ? "Ex miembro de la UCU"
+                                                : `${r.nombre_completo} (${r.ci_participante})`}
                                         </h3>
 
-                                        {/* Estrellas */}
                                         <div className="flex items-center gap-1">
                                             {Array.from({ length: 5 }).map((_, i) => (
                                                 <span
@@ -107,22 +97,26 @@ export default function ReseniasPage() {
                                         </div>
 
                                         <p className="text-gray-700 -mt-1 mb-2">
-                                            <span className="font-semibold">Edificio:</span> {r.edificio}
+                                            <span className="font-semibold">Edificio:</span>{" "}
+                                            {r.edificio}
                                         </p>
 
                                         <p className="text-gray-600">
-                                            <span className="font-semibold">ID_Reserva: </span> #{r.id_reserva}
+                                            <span className="font-semibold">ID_Reserva: </span> #
+                                            {r.id_reserva}
                                         </p>
 
                                         <p className="text-gray-600">
-                                            <span className="font-semibold">Fecha:</span> {r.fecha_publicacion}
+                                            <span className="font-semibold">Fecha:</span>{" "}
+                                            {r.fecha_publicacion}
                                         </p>
 
                                         <p className="text-gray-600">
-                                            <span className="font-semibold">Descripción:</span> {r.descripcion}
+                                            <span className="font-semibold">Descripción:</span>{" "}
+                                            {r.descripcion}
                                         </p>
-
                                     </div>
+
                                     <div className="flex flex-col gap-7">
                                         <button
                                             onClick={() => handleOpenEditar(r)}
@@ -132,48 +126,55 @@ export default function ReseniasPage() {
                                         </button>
 
                                         <button
-                                            onClick={() => handleOpenEliminar(r.id_resena)}
+                                            onClick={() =>
+                                                handleOpenEliminar(r.id_resena)
+                                            }
                                             className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition"
                                         >
                                             Eliminar
                                         </button>
                                     </div>
-
                                 </div>
                             ))}
 
                             {resenias.length === 0 && (
-                                <div className="text-gray-600 text-sm">No hay reseñas registradas.</div>
+                                <div className="text-gray-600 text-sm">
+                                    No hay reseñas registradas.
+                                </div>
                             )}
                         </div>
 
-                        {/* MODALES */}
                         <ModalEliminar
                             open={modalEliminar.open}
-                            onClose={() => setModalEliminar({ open: false, id: null })}
+                            onClose={() =>
+                                setModalEliminar({ open: false, id: null })
+                            }
                             objeto="esta reseña"
                             onConfirm={async () => {
-                                await apiFetch(`/resenas/eliminar/${modalEliminar.id}`, {
-                                    method: "DELETE",
-                                    token,
-                                });
+                                await apiFetch(
+                                    `/resenas/eliminar/${modalEliminar.id}`,
+                                    {
+                                        method: "DELETE",
+                                        token,
+                                    }
+                                );
                                 await refresh();
                             }}
                         />
 
                         <ModalEditarResena
                             open={modalEditar.open}
-                            onClose={() => setModalEditar({ open: false, resena: null })}
+                            onClose={() =>
+                                setModalEditar({ open: false, resena: null })
+                            }
                             resena={modalEditar.resena}
                             token={token}
                             onConfirm={async () => refresh()}
                         />
-
                     </main>
                 </div>
             </div>
 
-            {/* FOOTER */}
             <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
                 <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
             </nav>
