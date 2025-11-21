@@ -99,7 +99,7 @@ export default function ModalEditarSancion({open, onClose, sancion, titulo, toke
         <div className="fixed inset-0 z-50 grid place-items-center bg-gray-900/20 backdrop-blur-sm p-4">
             <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl">
 
-                <h2 className="text-xl font-semibold text-green-800">
+                <h2 className="text-xl font-semibold text-blue-800">
                     {titulo}
                 </h2>
 
@@ -166,7 +166,7 @@ export default function ModalEditarSancion({open, onClose, sancion, titulo, toke
 
                     <button
                         onClick={handleSave}
-                        className="px-4 py-1 rounded bg-green-800 hover:bg-green-700 text-white"
+                        className="px-4 py-1 rounded bg-blue-800 hover:bg-blue-700 text-white"
                     >
                         Guardar
                     </button>

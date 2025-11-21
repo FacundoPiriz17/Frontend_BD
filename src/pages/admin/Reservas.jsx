@@ -9,6 +9,7 @@ import ReservationDetailModal from "../../components/ReservationDetailModal.jsx"
 import ReservaModal from "../../components/ReservaModal.jsx";
 import ModalEliminar from "../../components/ModalEliminar.jsx";
 import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
 
 export default function ReservasPage() {
   const { token } = useAuth();
@@ -190,9 +191,7 @@ export default function ReservasPage() {
         </div>
       </div>
 
-      <nav className="flex justify-between items-center bg-blue-800 shadow-md px-6 py-4">
-        <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
-      </nav>
+      <Footer/>
     </div>
   );
 }
