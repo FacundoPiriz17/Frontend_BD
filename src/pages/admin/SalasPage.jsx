@@ -1,5 +1,4 @@
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../utils/api.js";
@@ -10,8 +9,6 @@ import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import Navbar from "../../components/Navbar.jsx";
 
 export default function SalasPage() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const { token } = useAuth();
   const [salas, setSalas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,6 +17,10 @@ export default function SalasPage() {
   const [modalModificar, setModalModificar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
   const [salaSeleccionada, setSalaSeleccionada] = useState(null);
+  const [edificios, setEdificios] = useState([]);
+  const [edificio, setEdificio] = useState("");
+  const [input, setInput] = useState("");
+  const [disponibilidad, setDisponibilidad] = useState(false);
 
   const fetchSalas = async () => {
     setLoading(true);
@@ -37,11 +38,6 @@ export default function SalasPage() {
     fetchSalas();
   }, [token]);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   const fetchSalasDisp = async () => {
     try {
       const data = await apiFetch(`/salas/disponibles`, { token });
@@ -53,12 +49,37 @@ export default function SalasPage() {
     }
   };
 
-  const fetchSala = async (nombre_sala, edificio) => {
+  useEffect(() => {
+    const fetchEdificio = async () => {
+      try {
+        const data = await apiFetch("/edificios/todos", { token });
+        setEdificios(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchEdificio();
+  }, [token]);
+
+  const fetchSala = async (nombre_sala) => {
+    setLoading(true);
     try {
       const data = await apiFetch(
-        `/salas/${encodeURIComponent(nombre_sala)}/${edificio}`,
+        `/salas/buscar/${encodeURIComponent(nombre_sala)}`,
         { token }
       );
+      setSalas(data);
+    } catch {
+      setSalas([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSalasEdificio = async (edificio) => {
+    setLoading(true);
+    try {
+      const data = await apiFetch(`/salas/${edificio}`, { token });
       setSalas(data);
     } catch (err) {
       setError(err.message);
@@ -67,14 +88,25 @@ export default function SalasPage() {
     }
   };
 
-  const fetchSalasEdificio = async (edificio) => {
-    try {
-      const data = await apiFetch(`/salas/${edificio}`, { token });
-      setSalas(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const handleKeyDown = async (e) => {
+    if (e.key == "Enter") {
+      handleBuscarSala();
+    }
+    return;
+  };
+
+  const handleBuscarSala = async () => {
+    if (input.trim() === "" && edificio === "") {
+      fetchSalas();
+      return;
+    }
+    if (input.trim() === "" && edificio !== "") {
+      fetchSalasEdificio(edificio);
+      return;
+    }
+    if (input.trim() !== "") {
+      fetchSala(input);
+      return;
     }
   };
 
@@ -173,12 +205,80 @@ export default function SalasPage() {
             Listado de Salas
           </h2>
 
-          <button
-            onClick={() => setModalAgregar(true)}
-            className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 shadow mb-6"
-          >
-            Añadir Sala
-          </button>
+          <div className="fixed right-6 gap">
+            <button
+              onClick={() => setModalAgregar(true)}
+              className=" mr-1 bg-green-700 text-white px-6 py-4 rounded-lg shadow-green-500  hover:bg-green-800 shadow mb-6"
+            >
+              + Añadir Sala
+            </button>
+            <button
+              onClick={() => {
+                setDisponibilidad(!disponibilidad);
+                if (disponibilidad) {
+                  fetchSalasDisp();
+                } else {
+                  fetchSalas();
+                }
+              }}
+              className="ml-1 bg-green-700 text-white px-6 py-4 rounded-lg shadow-green-500  hover:bg-green-800 shadow mb-6"
+            >
+              {disponibilidad ? "Solo Disponibles" : "Mostar Todo"}
+            </button>
+          </div>
+          <div className="flex justify-center gap-2 mb-6">
+            <input
+              type="text"
+              placeholder="Buscar Sala por nombre..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="px-4 py-2  border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent "
+            />
+
+            <select
+              value={edificio}
+              onChange={(e) => {
+                const nuevoEdificio = e.target.value;
+                setEdificio(nuevoEdificio);
+
+                if (nuevoEdificio === "") {
+                  fetchSalas();
+                } else {
+                  fetchSalasEdificio(nuevoEdificio);
+                }
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">Todos los edificios</option>
+              {edificios.map((edificio) => (
+                <option
+                  key={edificio.nombre_edificio}
+                  value={edificio.nombre_edificio}
+                >
+                  {edificio.nombre_edificio}
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={() => handleBuscarSala()}
+              className="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 shadow transition font-semibold"
+            >
+              Filtrar
+            </button>
+
+            <button
+              onClick={() => {
+                setInput("");
+                fetchSalas();
+                setEdificio("");
+              }}
+              className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 shadow transition"
+            >
+              Limpiar Filtro
+            </button>
+          </div>
 
           <div className="flex flex-col gap-4 px-4">
             {salas.length === 0 ? (
@@ -255,6 +355,10 @@ export default function SalasPage() {
           </div>
         </div>
       </div>
+
+      <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
+        <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
+      </nav>
 
       <ModalAgregarSala
         open={modalAgregar}

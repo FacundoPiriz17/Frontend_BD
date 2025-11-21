@@ -49,7 +49,7 @@ export default function SidebarAdmin() {
         overflow-hidden border-r-2 ${sidebarBorderClass} group shadow-xl z-30`}
     >
       <nav className="flex-1 flex flex-col justify-start pt-6 overflow-y-auto overflow-x-hidden">
-        <div className="flex flex-col gap-3">
+        <div className=" lflex flex-col gap-3">
           <NavItem
             icon={<FaChartBar />}
             label="Estadísticas"
