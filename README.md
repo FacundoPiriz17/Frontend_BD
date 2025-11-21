@@ -12,7 +12,7 @@
 
 18/11: Se realizó la página que administra las reservas dentro de Admin. 
 
-19/11: Se realizó la página que administra los usuarios dentro de Admin y también la base de datos ligeramente.
+19/11: Se realizó la página que administra los usuarios dentro de Admin y también se modificó la base de datos ligeramente, añadiendo algunas funcionalidades de borrado en Cascada.
 
 20/11: Se temrinó el registro de usuarios así como cambios en la página de administración de Salas, quedando completada. 
 
