@@ -7,6 +7,7 @@ import ModalAgregarSala from "../../components/ModalAgregarSala.jsx";
 import ModalModificarSala from "../../components/ModalModificarSala.jsx";
 import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
 
 export default function SalasPage() {
   const { token } = useAuth();
@@ -177,8 +178,8 @@ export default function SalasPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-800 mx-auto mb-4"></div>
-          <p className="text-xl text-green-800">Cargando Salas...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-800 mx-auto mb-4"></div>
+          <p className="text-xl text-blue-800">Cargando Salas...</p>
         </div>
       </div>
     );
@@ -201,14 +202,14 @@ export default function SalasPage() {
         <SidebarAdmin />
 
         <div className="flex-1 overflow-auto py-8 px-6">
-          <h2 className="text-3xl font-bold text-green-800 mb-6 text-center">
+          <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
             Listado de Salas
           </h2>
 
           <div className="fixed right-6 gap">
             <button
               onClick={() => setModalAgregar(true)}
-              className=" mr-1 bg-green-700 text-white px-6 py-4 rounded-lg shadow-green-500  hover:bg-green-800 shadow mb-6"
+              className=" mr-1 bg-blue-700 text-white px-6 py-4 rounded-lg shadow-blue-500  hover:bg-blue-800 shadow mb-6"
             >
               + Añadir Sala
             </button>
@@ -221,7 +222,7 @@ export default function SalasPage() {
                   fetchSalas();
                 }
               }}
-              className="ml-1 bg-green-700 text-white px-6 py-4 rounded-lg shadow-green-500  hover:bg-green-800 shadow mb-6"
+              className="ml-1 bg-blue-700 text-white px-6 py-4 rounded-lg shadow-blue-500  hover:bg-blue-800 shadow mb-6"
             >
               {disponibilidad ? "Solo Disponibles" : "Mostar Todo"}
             </button>
@@ -233,7 +234,7 @@ export default function SalasPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="px-4 py-2  border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent "
+              className="px-4 py-2  border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
 
             <select
@@ -248,7 +249,7 @@ export default function SalasPage() {
                   fetchSalasEdificio(nuevoEdificio);
                 }
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">Todos los edificios</option>
               {edificios.map((edificio) => (
@@ -263,7 +264,7 @@ export default function SalasPage() {
 
             <button
               onClick={() => handleBuscarSala()}
-              className="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 shadow transition font-semibold"
+              className="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800 shadow transition font-semibold"
             >
               Filtrar
             </button>
@@ -293,7 +294,7 @@ export default function SalasPage() {
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-green-800">
+                      <h3 className="text-xl font-bold text-blue-800">
                         {sala.nombre_sala}
                       </h3>
                       <p className="text-gray-600 text-sm">
@@ -304,7 +305,7 @@ export default function SalasPage() {
                       {sala.disponible ? (
                         <div>
                           <FaCheckCircle
-                            className="text-green-600 text-xl"
+                            className="text-blue-600 text-xl"
                             title="Disponible"
                           />
                           <p>Disponible</p>
@@ -338,13 +339,13 @@ export default function SalasPage() {
                   <div className="flex gap-2 mt-4">
                     <button
                       onClick={() => abrirModalModificar(sala)}
-                      className="flex-1 bg-green-800 text-white px-4 py-2 rounded hover:bg-green-700 transition flex items-center justify-center gap-2"
+                      className="flex-1 bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700 transition flex items-center justify-center gap-2"
                     >
                       <FaEdit /> Editar
                     </button>
                     <button
                       onClick={() => abrirModalEliminar(sala)}
-                      className="flex-1 bg-white text-green-800 border-2 border-green-800 p-6 w-5 px-4 py-2 rounded hover:bg-red-700 transition flex items-center justify-center gap-2"
+                      className="flex-1 bg-white text-blue-800 border-2 border-blue-800 p-6 w-5 px-4 py-2 rounded hover:bg-red-700 transition flex items-center justify-center gap-2"
                     >
                       <FaTrash /> Eliminar
                     </button>
@@ -356,9 +357,7 @@ export default function SalasPage() {
         </div>
       </div>
 
-      <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-        <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
-      </nav>
+      <Footer/>
 
       <ModalAgregarSala
         open={modalAgregar}

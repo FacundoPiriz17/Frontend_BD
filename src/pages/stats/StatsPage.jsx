@@ -16,6 +16,7 @@ import {
   getReservasPorDia,
   getSalasMenorOcupacion,
 } from "../../utils/getStats";
+import Footer from "../../components/Footer.jsx";
 
 export default function StatsPage() {
   const { logout } = useAuth();
@@ -90,8 +91,8 @@ export default function StatsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-800 mx-auto mb-4"></div>
-          <p className="text-xl text-green-800">Cargando estadísticas...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-800 mx-auto mb-4"></div>
+          <p className="text-xl text-blue-800">Cargando estadísticas...</p>
         </div>
       </div>
     );
@@ -114,14 +115,14 @@ export default function StatsPage() {
       <div className="flex flex-1">
         <SidebarAdmin />
         <div className="flex-1 overflow-auto py-8 px-6">
-          <h2 className="text-3xl font-bold text-green-800 mb-6 text-center">
+          <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
             Panel de Estadísticas Completo
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {/* Salas más reservadas */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Salas Más Reservadas
               </h3>
               <ul className="space-y-2">
@@ -140,8 +141,8 @@ export default function StatsPage() {
             </div>
 
             {/* Turnos más demandados */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Turnos Más Demandados
               </h3>
               <ul className="space-y-2">
@@ -162,12 +163,12 @@ export default function StatsPage() {
             </div>
 
             {/* Porcentaje de reservas utilizadas */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Reservas Utilizadas
               </h3>
               <div className="text-center">
-                <p className="text-4xl font-bold text-green-600 mb-2">
+                <p className="text-4xl font-bold text-blue-600 mb-2">
                   {porcentajeUtilizadas?.pct_utilizadas}%
                 </p>
                 <p className="text-sm text-gray-600">
@@ -181,8 +182,8 @@ export default function StatsPage() {
             </div>
 
             {/* Promedio de participantes por sala */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Promedio Participantes por Sala
               </h3>
               <ul className="space-y-2 max-h-60 overflow-y-auto">
@@ -203,8 +204,8 @@ export default function StatsPage() {
             </div>
 
             {/* Top 10 usuarios */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Top 10 Usuarios con Más Reservas
               </h3>
               <ul className="space-y-2 max-h-60 overflow-y-auto">
@@ -225,8 +226,8 @@ export default function StatsPage() {
             </div>
 
             {/* Salas con menor ocupación */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Salas con Menor Ocupación
               </h3>
               <ul className="space-y-2">
@@ -245,8 +246,8 @@ export default function StatsPage() {
             </div>
 
             {/* Reservas por día de la semana */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Reservas por Día de la Semana
               </h3>
               <ul className="space-y-2">
@@ -263,8 +264,8 @@ export default function StatsPage() {
             </div>
 
             {/* Porcentaje de ocupación por edificio */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Ocupación por Edificio
               </h3>
               <ul className="space-y-2 max-h-60 overflow-y-auto">
@@ -283,8 +284,8 @@ export default function StatsPage() {
             </div>
 
             {/* Reservas y asistencias por rol */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Reservas y Asistencias (Profesores/Alumnos)
               </h3>
               <ul className="space-y-2 max-h-60 overflow-y-auto">
@@ -303,8 +304,8 @@ export default function StatsPage() {
             </div>
 
             {/* Sanciones por rol */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Sanciones por Rol
               </h3>
               <ul className="space-y-2">
@@ -325,8 +326,8 @@ export default function StatsPage() {
             </div>
 
             {/* Reservas por carrera y facultad */}
-            <div className="bg-[#fcfaee] p-6 rounded-xl shadow-md col-span-1 md:col-span-2">
-              <h3 className="text-xl font-bold text-green-800 mb-4">
+            <div className="bg-blue-50 p-6 rounded-xl shadow-md col-span-1 md:col-span-2">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">
                 Reservas por Carrera y Facultad
               </h3>
               <ul className="space-y-2 max-h-60 overflow-y-auto">
@@ -346,9 +347,7 @@ export default function StatsPage() {
           </div>
         </div>
       </div>
-      <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-        <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
-      </nav>
+      <Footer/>
     </div>
   );
 }

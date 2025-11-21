@@ -49,7 +49,6 @@ export default function ReseniasPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
-      {/* NAV SUPERIOR */}
       <Navbar />
 
       <div className="flex flex-1 h-full">
@@ -57,14 +56,12 @@ export default function ReseniasPage() {
 
         <div className="flex-1 overflow-auto py-8 px-4">
           <main className="max-w-3xl mx-auto w-full">
-            {/* Título y botón */}
             <div className="flex justify-between items-center px-4 mb-6">
               <h2 className="text-3xl font-bold text-blue-900">
                 Gestión de Reseñas
               </h2>
             </div>
 
-            {/* LISTADO */}
             <div className="flex flex-col gap-4 px-4">
               {resenias.map((r) => (
                 <div
@@ -119,14 +116,14 @@ export default function ReseniasPage() {
                   <div className="flex flex-col gap-7">
                     <button
                       onClick={() => handleOpenEditar(r)}
-                      className="px-4 py-2 border border-green-700 text-blue-700 rounded-lg hover:bg-green-50 transition"
+                      className="px-4 py-2 border border-blue-700 text-blue-700 rounded-lg hover:bg-blue-50 transition"
                     >
                       Editar
                     </button>
 
                     <button
                       onClick={() => handleOpenEliminar(r.id_resena)}
-                      className="px-4 py-2 text-blue-700 text-white rounded-lg hover:bg-green-800 transition"
+                      className="px-4 py-2 text-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
                     >
                       Eliminar
                     </button>

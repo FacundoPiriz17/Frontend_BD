@@ -8,12 +8,12 @@ export default function AdminPage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
-      <Navbar />
-      <div className="flex flex-1 h-full">
+      <div className="min-h-screen flex flex-col bg-[#0b1743]">
+          <Navbar />
+          <div className="flex flex-1 h-full bg-[#0b1743]">
         <SidebarAdmin />
-        <div className="flex-1 overflow-auto py-8 px-4">
-          <main className="flex flex-col items-center justify-center h-[80vh] text-center">
+          <div className="flex-1 overflow-auto py-8 px-4 bg-gradient-to-b from-gray-100 to-blue-50">
+              <main className="flex flex-col items-center justify-center h-[80vh] text-center">
             <h2 className="text-3xl font-bold text-blue-900 mb-3">
               Bienvenido, {user?.nombre}
             </h2>

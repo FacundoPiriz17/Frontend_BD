@@ -35,7 +35,7 @@ export default function ModalModificarSala({ open, onClose, onConfirm, sala }) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-gray-900/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-        <h2 className="text-2xl font-bold text-green-800 mb-4">
+        <h2 className="text-2xl font-bold text-blue-800 mb-4">
           Modificar Sala: {sala.nombre_sala}
         </h2>
         <p className="text-gray-600 text-sm mb-4">Edificio: {sala.edificio}</p>
@@ -51,7 +51,7 @@ export default function ModalModificarSala({ open, onClose, onConfirm, sala }) {
               value={formData.capacidad}
               onChange={handleChange}
               min="1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default function ModalModificarSala({ open, onClose, onConfirm, sala }) {
               name="tipo_sala"
               value={formData.tipo_sala}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="Libre">Libre</option>
               <option value="Posgrado">Posgrado</option>
@@ -77,7 +77,7 @@ export default function ModalModificarSala({ open, onClose, onConfirm, sala }) {
               name="disponible"
               checked={formData.disponible}
               onChange={handleChange}
-              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <label className="text-sm font-medium text-gray-700">
               Disponible

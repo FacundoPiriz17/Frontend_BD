@@ -1,6 +1,4 @@
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import ucuRoomsLogo from "../../assets/ucurooms_White.png";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../utils/api.js";
@@ -8,21 +6,14 @@ import ModalEliminarSancion from "../../components/ModalEliminar.jsx";
 import ModalEditarSancion from "../../components/ModalEditarSancion.jsx";
 import ModalEliminar from "../../components/ModalEliminar.jsx";
 import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
 
 export default function SancionesPage() {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
     const [sanciones, setSanciones] = useState([]);
     const { token } = useAuth();
 
     const [modalEliminar, setModalEliminar] = useState({ open: false, id: null });
     const [modalEditar, setModalEditar] = useState({ open: false, sancion: null });
-
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
-
 
     useEffect(() => {
         let ignore = false;
@@ -70,13 +61,12 @@ export default function SancionesPage() {
                 <div className="flex-1 overflow-auto py-8 px-4">
                     <main className="max-w-3xl mx-auto w-full">
 
-                        {/* Título y botón Añadir */}
                         <div className="flex justify-between items-center px-4 mb-6">
-                            <h2 className="text-3xl font-bold text-green-800">Gestión de Sanciones</h2>
+                            <h2 className="text-3xl font-bold text-blue-800">Gestión de Sanciones</h2>
 
                             <button
                                 onClick={handleOpenAniadir}
-                                className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 shadow"
+                                className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 shadow"
                             >
                                 Añadir sanción
                             </button>
@@ -90,7 +80,7 @@ export default function SancionesPage() {
                                     className="bg-white shadow-md rounded-xl p-5 w-full flex justify-between items-center border border-gray-200"
                                 >
                                     <div>
-                                        <h3 className="text-xl font-semibold text-green-800">
+                                        <h3 className="text-xl font-semibold text-blue-800">
                                             Nombre: {s.nombre_completo ?? "Desconocido"}
                                         </h3>
 
@@ -114,14 +104,14 @@ export default function SancionesPage() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleOpenEditar(s)}
-                                            className="px-4 py-2 border border-green-700 text-green-700 rounded-lg hover:bg-green-50 transition"
+                                            className="px-4 py-2 border border-blue-700 text-blue-700 rounded-lg hover:bg-blue-50 transition"
                                         >
                                             Editar
                                         </button>
 
                                         <button
                                             onClick={() => handleOpenEliminar(s.id_sancion)}
-                                            className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition"
+                                            className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
                                         >
                                             Eliminar
                                         </button>
@@ -164,9 +154,7 @@ export default function SancionesPage() {
                 </div>
             </div>
 
-            <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-                <h1 className="text-xl font-semibold text-[#fcfaee]">UCU</h1>
-            </nav>
+            <Footer/>
 
         </div>
     );

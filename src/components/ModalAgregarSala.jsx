@@ -30,7 +30,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-gray-900/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-        <h2 className="text-2xl font-bold text-green-800 mb-4">
+        <h2 className="text-2xl font-bold text-blue-800 mb-4">
           Agregar Nueva Sala
         </h2>
 
@@ -45,7 +45,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
               value={formData.nombre_sala}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -59,7 +59,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
               value={formData.edificio}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -74,7 +74,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
               onChange={handleChange}
               min="1"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -87,7 +87,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
               value={formData.tipo_sala}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="Libre">Libre</option>
               <option value="Posgrado">Posgrado</option>
@@ -105,7 +105,7 @@ export default function ModalAgregarSala({ open, onClose, onConfirm }) {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg bg-green-700 hover:bg-green-800 text-white transition"
+              className="px-6 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white transition"
             >
               Agregar
             </button>
