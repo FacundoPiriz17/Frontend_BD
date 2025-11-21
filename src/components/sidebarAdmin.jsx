@@ -23,15 +23,15 @@ export default function SidebarAdmin() {
     switch (role) {
       case "Administrador":
         return {
-          sidebarBgClass: "bg-green-800",
-          sidebarBorderClass: "border-green-800",
-          itemHoverClass: "hover:bg-[#fcfaee] hover:text-green-800",
+          sidebarBgClass: "bg-blue-900",
+          sidebarBorderClass: "border-blue-900",
+          itemHoverClass: "hover:bg-[#fcfaee] hover:text-blue-900",
         };
       case "Funcionario":
         return {
-          sidebarBgClass: "bg-yellow-500",
-          sidebarBorderClass: "border-yellow-500",
-          itemHoverClass: "hover:bg-yellow-600/40",
+          sidebarBgClass: "bg-blue-900",
+          sidebarBorderClass: "border-blue-900",
+          itemHoverClass: "hover:bg-[#fcfaee] hover:text-blue-900",
         };
       default:
         return {
