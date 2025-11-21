@@ -9,12 +9,12 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
-      <Navbar/>
-    <div className="flex flex-1 h-full">
-          <SidebarAdmin />
+      <Navbar />
+      <div className="flex flex-1 h-full">
+        <SidebarAdmin />
         <div className="flex-1 overflow-auto py-8 px-4">
           <main className="flex flex-col items-center justify-center h-[80vh] text-center">
-            <h2 className="text-3xl font-bold text-green-800 mb-3">
+            <h2 className="text-3xl font-bold text-blue-900 mb-3">
               Bienvenido, {user?.nombre}
             </h2>
             <p className="text-gray-600 text-lg">
@@ -30,7 +30,7 @@ export default function AdminPage() {
           </main>
         </div>
       </div>
-        <Footer/>
+      <Footer />
     </div>
   );
 }
