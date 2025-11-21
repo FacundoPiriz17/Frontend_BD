@@ -1,11 +1,11 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import ucuRoomsLogo from "../../assets/ucurooms_White.png";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../utils/api.js";
 import ModalEliminar from "../../components/ModalEliminar.jsx";
 import ModalEditarUsuario from "../../components/ModalEditarUsuario.jsx";
+import Navbar from "../../components/Navbar.jsx";
 
 export default function UsuariosPage() {
     const { user, logout, token } = useAuth();
@@ -15,11 +15,6 @@ export default function UsuariosPage() {
 
     const [modalEliminar, setModalEliminar] = useState({ open: false, ci: null });
     const [modalEditar, setModalEditar] = useState({ open: false, usuario: null });
-
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
 
     useEffect(() => {
         let ignore = false;
@@ -55,21 +50,7 @@ export default function UsuariosPage() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 flex flex-col">
 
-            <nav className="flex justify-between items-center bg-green-800 shadow-md px-6 py-4">
-                <div className="flex items-center space-x-3">
-                    <img src={ucuRoomsLogo} alt="UCU Rooms" className="w-15 h-15 mr-20" />
-                    <h1 className="text-xl font-semibold text-[#fcfaee]">
-                        Panel del Administrador
-                    </h1>
-                </div>
-
-                <button
-                    onClick={handleLogout}
-                    className="text-green-800 bg-[#fcfaee] hover:bg-[#fcfaee]/90 px-4 py-2 rounded transition"
-                >
-                    Cerrar sesión
-                </button>
-            </nav>
+            <Navbar/>
 
             <div className="flex flex-1 h-full">
 
@@ -78,7 +59,6 @@ export default function UsuariosPage() {
                 <div className="flex-1 overflow-auto py-8 px-4">
                     <main className="max-w-3xl mx-auto w-full">
 
-                        {/* Título y botón Añadir */}
                         <div className="flex justify-between items-center px-4 mb-6">
                             <h2 className="text-3xl font-bold text-green-800">Gestión de Usuarios</h2>
 
@@ -90,7 +70,6 @@ export default function UsuariosPage() {
                             </button>
                         </div>
 
-                        {/* Lista */}
                         <div className="flex flex-col gap-4 px-4">
                             {usuarios.map((u) => (
                                 <div
@@ -138,7 +117,6 @@ export default function UsuariosPage() {
                             )}
                         </div>
 
-                        {/* Modales */}
                         <ModalEliminar
                             open={modalEliminar.open}
                             onClose={() => setModalEliminar({ open: false, ci: null })}
