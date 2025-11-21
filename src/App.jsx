@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
-import Prueba from "./pages/Prueba";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import UnauthorizedPage from "./pages/UnauthorizedPage.jsx";
 import ParticipantePage from "./pages/participante/ParticipantePage.jsx";
@@ -17,6 +16,7 @@ import UsuariosPage from "./pages/admin/Usuarios.jsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RegisterForm from "./pages/RegisterForm.jsx";
 
 function App() {
     return (
@@ -40,7 +40,9 @@ function App() {
 
                         <Route element={<ProtectedRoute requiredRole="Administrador"/>}>
                             <Route path="/admin" element={<AdminPage/>}/>
-                            {/*<Route path="/salas" element={<SalasPage />} />*/}
+                            <Route path="/salas" element={<SalasPage />} />
+                            <Route path="/usuarios" element={<UsuariosPage/>}/>
+                            <Route path="/registro" element={<RegisterForm/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute requiredRoles={["Administrador", "Funcionario"]}/>}>
@@ -48,9 +50,6 @@ function App() {
                             <Route path="/stats" element={<StatsPage/>}/>
                             <Route path="/reseñas" element={<ReseniasPage/>}/>
                             <Route path="/reservas" element={<ReservasPage/>}/>
-                        </Route>
-                        <Route element={<ProtectedRoute requiredRoles="Administrador"/>}>
-                            <Route path="/usuarios" element={<UsuariosPage/>}/>
                         </Route>
 
                         <Route element={<ProtectedRoute/>}>
