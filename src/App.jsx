@@ -40,7 +40,7 @@ function App() {
 
                         <Route element={<ProtectedRoute requiredRole="Administrador"/>}>
                             <Route path="/admin" element={<AdminPage/>}/>
-                            {/*<Route path="/salas" element={<SalasPage />} />*/}
+                            <Route path="/salas" element={<SalasPage />} />
                             <Route path="/usuarios" element={<UsuariosPage/>}/>
                             <Route path="/registro" element={<RegisterForm/>}/>
                         </Route>
