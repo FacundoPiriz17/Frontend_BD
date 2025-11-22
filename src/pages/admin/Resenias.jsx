@@ -108,10 +108,9 @@ export default function ReseniasPage() {
                       {r.fecha_publicacion}
                     </p>
 
-                    <p className="text-gray-600">
-                      <span className="font-semibold">Descripción:</span>{" "}
-                      {r.descripcion}
-                    </p>
+                      <p className="text-gray-600 break-all whitespace-normal">
+                          <span className="font-semibold">Descripción:</span> {r.descripcion}
+                      </p>
                   </div>
                   <div className="flex flex-col gap-7">
                     <button
@@ -121,12 +120,12 @@ export default function ReseniasPage() {
                       Editar
                     </button>
 
-                    <button
-                      onClick={() => handleOpenEliminar(r.id_resena)}
-                      className="px-4 py-2 text-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
-                    >
-                      Eliminar
-                    </button>
+                      <button
+                          onClick={() => handleOpenEliminar(r.id_resena)}
+                          className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
+                      >
+                          Eliminar
+                      </button>
                   </div>
                 </div>
               ))}
