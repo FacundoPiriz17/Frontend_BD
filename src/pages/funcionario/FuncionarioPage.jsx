@@ -1,37 +1,52 @@
 import { useAuth } from "../../contexts/AuthContext";
-
 import Navbar from "../../components/Navbar";
 import SidebarAdmin from "../../components/sidebarAdmin.jsx";
 import Footer from "../../components/Footer.jsx";
 import NavButton from "../../components/NavButton.jsx";
 
 export default function FuncionarioPage() {
-  const { user } = useAuth();
+    const { user } = useAuth();
 
-  return (
-      <div className="min-h-screen flex flex-col bg-[#0b1743]">
-      <Navbar />
-          <div className="flex flex-1 h-full bg-[#0b1743]">
-        <SidebarAdmin />
-              <div className="flex-1 overflow-auto py-8 px-4 bg-gradient-to-b from-gray-50 to-blue-50">
-                  <main className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
-            <h2 className="text-3xl font-bold text-blue-900 mb-3">
-              Bienvenido, {user?.nombre}
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Desde aquí podrás administrar las salas y verificar reservas.
-            </p>
+    return (
+        <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <div className="flex flex-1 bg-gradient-to-b from-slate-200 to-blue-100">
+                <SidebarAdmin />
+                <main className="flex-1 overflow-auto flex items-center justify-center">
+                    <div className="w-full px-4 py-8">
+                        <header className="mb-8 text-center">
+                            <h2 className="text-2xl sm:text-3xl font-bold text-blue-900">
+                                Bienvenido, {user?.nombre}
+                            </h2>
+                            <p className="mt-2 text-slate-600 text-sm sm:text-base">
+                                Desde aquí podrás administrar las reservas y verificar reservas.
+                            </p>
+                        </header>
 
-            <div className="m-6 bg-white p-4 rounded-xl shadow-md w-full max-w-lg grid grid-cols-2 gap-1 ">
-              <NavButton href={"/stats"} name={"Estadisticas"} />
-              <NavButton href={"/sanciones"} name={"Sanciones"} />
-              <NavButton href={"/reseñas"} name={"Reseñas"} />
-              <NavButton href={"/usuarios"} name={"Usuarios"} />
+                        <section className="flex justify-center items-center">
+                            <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
+                                <NavButton
+                                    href="/stats"
+                                    name="Estadísticas"
+                                />
+                                <NavButton
+                                    href="/reservas"
+                                    name="Reservas"
+                                />
+                                <NavButton
+                                    href="/sanciones"
+                                    name="Sanciones"
+                                />
+                                <NavButton
+                                    href="/reseñas"
+                                    name="Reseñas"
+                                />
+                            </div>
+                        </section>
+                    </div>
+                </main>
             </div>
-          </main>
+            <Footer />
         </div>
-      </div>
-      <Footer />
-    </div>
-  );
+    );
 }

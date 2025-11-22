@@ -55,21 +55,26 @@ export default function ReseniasPage() {
         <SidebarAdmin />
 
         <div className="flex-1 overflow-auto py-8 px-4">
-          <main className="max-w-3xl mx-auto w-full">
+            <main className="max-w-5xl mx-auto w-full">
             <div className="flex justify-between items-center px-4 mb-6">
-              <h2 className="text-3xl font-bold text-blue-900">
+                <h2 className="text-2xl sm:text-3xl font-bold text-blue-900">
                 Gestión de Reseñas
               </h2>
             </div>
 
+            <section className="mt-4 px-4">
             <div className="flex flex-col gap-4 px-4">
               {resenias.map((r) => (
                 <div
                   key={r.id_resena}
-                  className="bg-white shadow-md rounded-xl p-5 w-full flex justify-between items-center border border-gray-200"
+                  className="
+                    group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm
+                    flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3
+                    transition hover:-translate-y-0.5 hover:border-blue-700 hover:shadow-md
+                  "
                 >
                   <div className="space-y-1">
-                    <h3 className="text-2xl font-bold text-blue-900">
+                      <h3 className="text-sm sm:text-base font-semibold text-slate-900">
                       {r.nombre_sala}
                     </h3>
 
@@ -112,21 +117,6 @@ export default function ReseniasPage() {
                           <span className="font-semibold">Descripción:</span> {r.descripcion}
                       </p>
                   </div>
-                  <div className="flex flex-col gap-7">
-                    <button
-                      onClick={() => handleOpenEditar(r)}
-                      className="px-4 py-2 border border-blue-700 text-blue-700 rounded-lg hover:bg-blue-50 transition"
-                    >
-                      Editar
-                    </button>
-
-                      <button
-                          onClick={() => handleOpenEliminar(r.id_resena)}
-                          className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
-                      >
-                          Eliminar
-                      </button>
-                  </div>
                 </div>
               ))}
 
@@ -136,6 +126,7 @@ export default function ReseniasPage() {
                 </div>
               )}
             </div>
+            </section>
 
             {/* MODALES */}
             <ModalEliminar
