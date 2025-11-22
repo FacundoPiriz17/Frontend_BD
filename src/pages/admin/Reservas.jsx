@@ -104,13 +104,13 @@ export default function ReservasPage() {
 
         <div className="flex-1 overflow-auto py-8 px-4">
           <main className="max-w-4xl mx-auto w-full">
-            <div className="flex justify-between items-center px-4 mb-6">
-              <h2 className="text-3xl font-bold text-blue-900">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-blue-900">
                 Gestión de Reservas
               </h2>
               <button
                 onClick={() => setModalAgregar(true)}
-                className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 shadow"
+                className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 Añadir reserva
               </button>
