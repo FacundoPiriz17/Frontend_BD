@@ -209,10 +209,10 @@ export default function ReservaModal({
         return (
             <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
                 <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl">
-                    <h3 className="mb-3 text-lg font-bold text-green-700">
+                    <h3 className="mb-3 text-lg font-bold text-blue-700">
                         {esEditar
                             ? `Editar reserva #${reserva?.id_reserva}`
-                            : "Nueva reserva (Admin)"}
+                            : "Nueva reserva"}
                     </h3>
 
                     <label className="text-sm font-medium">
@@ -331,7 +331,7 @@ export default function ReservaModal({
                         </button>
                         <button
                             onClick={handleAdminSave}
-                            className="rounded-xl bg-green-700 px-3 py-2 text-white"
+                            className="rounded-xl bg-blue-700 px-3 py-2 text-white"
                         >
                             Guardar
                         </button>

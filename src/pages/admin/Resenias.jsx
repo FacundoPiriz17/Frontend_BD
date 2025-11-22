@@ -113,10 +113,9 @@ export default function ReseniasPage() {
                       {r.fecha_publicacion}
                     </p>
 
-                    <p className="text-gray-600">
-                      <span className="font-semibold">Descripción:</span>{" "}
-                      {r.descripcion}
-                    </p>
+                      <p className="text-gray-600 break-all whitespace-normal">
+                          <span className="font-semibold">Descripción:</span> {r.descripcion}
+                      </p>
                   </div>
                 </div>
               ))}
