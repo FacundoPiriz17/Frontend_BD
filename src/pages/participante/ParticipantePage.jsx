@@ -301,6 +301,35 @@ export default function ParticipantePage() {
     }
   };
 
+  const handleCambiarEstadoInvitacion = async (inv, nuevoEstado) => {
+    try {
+      await apiFetch(`/reservas/confirmacion/${inv.id_reserva}`, {
+        method: "PATCH",
+        body: { confirmacion: nuevoEstado },
+        token,
+      });
+
+      setConfirmadas((prev) =>
+        prev.map((r) =>
+          r.id_reserva === inv.id_reserva
+            ? { ...r, confirmacion: nuevoEstado }
+            : r
+        )
+      );
+
+      triggerReload();
+      toast.success(
+        `Invitación ${
+          nuevoEstado === "Confirmado" ? "confirmada" : "rechazada"
+        } correctamente.`
+      );
+    } catch (e) {
+      toast.error(
+        e.message || "No se pudo cambiar el estado de la invitación."
+      );
+    }
+  };
+
   async function handleCancel(reserva) {
     try {
       await apiFetch(`/reservas/cancelar/${reserva.id_reserva}`, {
@@ -516,6 +545,35 @@ export default function ParticipantePage() {
                                 Estado: {inv.confirmacion}
                               </p>
                             </div>
+                          </div>
+
+                          <div className="flex flex-col gap-2">
+                            {!isConfirmada && (
+                              <button
+                                onClick={() =>
+                                  handleCambiarEstadoInvitacion(
+                                    inv,
+                                    "Confirmado"
+                                  )
+                                }
+                                className="rounded bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition"
+                              >
+                                ✓ Confirmar
+                              </button>
+                            )}
+                            {isConfirmada && (
+                              <button
+                                onClick={() =>
+                                  handleCambiarEstadoInvitacion(
+                                    inv,
+                                    "Rechazado"
+                                  )
+                                }
+                                className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition"
+                              >
+                                ✗ Rechazar
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
